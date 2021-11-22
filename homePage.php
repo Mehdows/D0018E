@@ -55,7 +55,8 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <div class="full_width clear">
 
   <?php
-    $result = getAllItems($conn);
+    $sql = "SELECT item_ID, name, price, image FROM Items";
+    $result = $conn->query($sql);
 
     echo('<table>');
       echo('<tr>');
@@ -68,11 +69,11 @@ div.full_width div{color:#666666; background-color:#fffefe;}
         echo('<div class="imgContainer">');
           echo('<div>');
                     echo('<div>');
-              echo("<h2>".htmlentities($row['name']). " - " . htmlentities($row['price']). " kr/st</h2>");
-              echo('<a href="inspect.html" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
+              echo("<h2>".htmlentities($row['name']). " - " . htmlentities($row['price']). " kr/item</h2>");
+              echo('<a href="inspect.php?user_id='.$_GET[user_id].'&item_id='.$row['item_ID'].'" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
             echo('</div>');
                     echo('<div class="imgButton">');
-              echo('<a class="button" href="/inspect.html">Buy</a>');
+              echo('<a  class="button" href="">Buy</a>');
             echo('</div>');
           echo('</div>');
         echo('</div>');

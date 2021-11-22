@@ -79,6 +79,10 @@ button.primaryContained:hover {
 <!-- END DEMO STYLING -->
 </head>
 <body>
+    <?php
+		require __DIR__ . '/functions.php';
+		$conn = startConnection();
+    ?>
 
     <style>
         table, th, td {
@@ -118,12 +122,21 @@ button.primaryContained:hover {
 <div class="wrapper row3">
 <div id="container">
 
-    <h2>Banana</h2>
+<?php
+    $sql = "SELECT name, stock, price, info, image FROM Items WHERE item_ID = $_GET[item_id]";
+    $result = $conn->query($sql);
+    $row = mysqli_fetch_assoc($result);
 
+    echo('<h2>'.$row["name"].'</h2>');
+?>
         <td>
             <div class="imgContainer">
                 <div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg" style="width:150px;height:150px;">
+                    <img src=
+                    <?php
+                        echo(htmlentities($row['image'])); 
+                    ?>
+                    style="width:300px;height:300px;">
                 </div>
                 <div class="imgButton">
                     <button value="test">buy</button>
@@ -132,14 +145,26 @@ button.primaryContained:hover {
         </td>
 
     <div class="full_width clear">
-        <div class="one_third first">In stock</div>
-        <div class="two_third">Beskrivning</div>
+        <div class="one_third first">
+            <?php
+                echo($row["stock"]. ' items in stock');
+            ?>
+        </div>
+        <div class="two_third">
+            <?php
+                echo($row["info"]);
+            ?>
+        </div>
     </div>
 
 
     <div class="full_width clear">
         <div class="one_third first">Total grading</div>
-        <div class="one_third second">Cost</div>
+        <div class="one_third second">
+            <?php
+                echo($row["price"]. ' kr/item');
+            ?>
+        </div>
     </div>
 
     <section id="app">
@@ -148,20 +173,22 @@ button.primaryContained:hover {
                 <div class="col-6">
                     <div class="comment">
                         <p v-for="items in item" v-text="items"></p>
-                    </div><!--End Comment-->
-                </div><!--End col -->
-            </div><!-- End row -->
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-6">
                     <textarea type="text" class="input" placeholder="Write a comment" v-model="newItem" @keyup.enter="addItem()"></textarea>
                     <button v-on:click="addItem()" class='primaryContained float-right' type="submit">Add Comment</button>
-                </div><!-- End col -->
-            </div><!--End Row -->
-        </div><!--End Container -->
-    </section><!-- end App -->
+                </div>
+            </div>
+        </div><
+    </section>
+
 
 </div>
 </div>
+ -->
     <!-- ################################################################################################ -->
 
 <!-- Footer -->
@@ -173,5 +200,10 @@ button.primaryContained:hover {
     </footer>
 </div>
 -->
+
+<?php
+  closeConnection($conn);
+?>
+
 </body>
 </html>
