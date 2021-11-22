@@ -26,6 +26,11 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 </head>
 <body>
 
+    <?php
+        require __DIR__ . '/functions.php';
+        $conn = startConnection();
+    ?>
+
     <style>
         table, th, td {
             border:1px solid black;
@@ -46,11 +51,11 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.html">Homepage</a></li>
+        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
         <li><a href="#"></a></li>
-        <li><a href="orderHistory.html">Order history</a></li>
-        <li><a href="shoppingCart.html">Cart</a></li>
-        <li><a href="login.html">Logout</a></li>
+        <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
+        <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
+        <li><a href="login.php">Logout</a></li>
     </ul>
     </nav>
 </div>
@@ -64,61 +69,42 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <div class="full_width clear">
     <h2>Shopping cart</h2>
 
+    <?php
+        $sql = "SELECT name, amount, Items.price FROM OrderItems 
+        JOIN Items ON OrderItems.item_ID = Items.item_ID WHERE OrderItems.order_ID in 
+            (SELECT order_ID FROM Orders WHERE customer_ID = '$_GET[user_id]' AND bought = '0')";
+        $result = $conn->query($sql);
+    ?>
+
     <table style="width:100%">
         <tr>
             <th>Item</th>
+            <th>Amount</th>
             <th>Cost</th>
         </tr>
-        <tr>
-            <td>Banana</td>
-            <td>6</td>
-        </tr>
-        <tr>
-            <td>Apple</td>
-            <td>3</td>
-        </tr>
-        <tr>
-            <td>Total</td>
-            <td>9</td>
-        </tr>
+
+        <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo('
+                    <tr>
+                    <td>'.$row[name].'</td>
+                    <td>'.$row[amount].'</td>
+                    <td>'.$row[price].'</td>
+                    </tr>
+                ');
+                $costTot += $row[amount]*$row[price];
+            }
+        ?>
+        
     </table>
+
+    <?php
+        echo('<h3>Total Cost: '.$costTot. ' kr</h3>');
+    ?>
 
     <div class="imgButton">
         <button value="test">Buy</button>
     </div>
-
-<!--
-        <div class="full_width">Order</div>
-        <div class="one_third">One Third</div>
-        <div class="one_third">One Third</div>
-    </div>
-
-    <div class="full_width clear">
-        <div class="one_third first">One Third</div>
-        <div class="two_third">Two Third</div>
-    </div>
-
-    <div class="full_width clear">
-        <div class="two_third first">Two Third</div>
-        <div class="one_third">One Third</div>
-    </div>
--->
-
-    <!-- ################################################################################################ -->
-
-</div>
-</div>
-
-<!-- Footer -->
-
-<!--
-<div class="wrapper row4">
-    <footer id="footer" class="clear">
-    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>
-    <p class="fl_right">Template by <a target="_blank" href="https://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
-    </footer>
-</div>
--->
 
 </body>
 </html>

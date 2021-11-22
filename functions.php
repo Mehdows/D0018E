@@ -1,6 +1,5 @@
 <?php
 
-
 function startConnection() {
   $servername = "130.240.200.63";
   $username = "ConnectUser";
