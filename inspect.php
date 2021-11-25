@@ -202,7 +202,7 @@ button.primaryContained:hover {
 -->
 
 <?php
-  closeConnection($conn);
+    closeConnection($conn);
 ?>
 
 </body>
