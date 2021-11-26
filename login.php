@@ -122,18 +122,18 @@ if (isset($_POST['name'])) {
 
 		<label for="pssword"><b>Pssword</b></label>
 		<input
-			type="pssword"
+			type=""
 			placeholder="Enter Password"
 			name="pssword"
 			required
 		/>
 
-		<input class="link"><a href="createAccount.php" type="submit">Login</a>/>
+		<button class="link"><input type="submit" value="Login" name="submit" class="login-button" >Login</input></button>
 
 	</div>
 
 	<div class="container" style="background-color: #f1f1f1">
-		<span class="psw">
+		<span class="link">
 			<a href="createAccount.php">Create new account</a></span
 		>
 	</div>
