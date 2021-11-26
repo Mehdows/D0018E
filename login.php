@@ -128,13 +128,13 @@ if (isset($_POST['name'])) {
 			required
 		/>
 
-		<button class="link"><a href="createAccount.php" type="submit">Login</a></button>
+		<input class="link"><a href="createAccount.php" type="submit">Login</a>/>
 
 	</div>
 
 	<div class="container" style="background-color: #f1f1f1">
 		<span class="psw">
-			<a href="createAccount.html">Create new account</a></span
+			<a href="createAccount.php">Create new account</a></span
 		>
 	</div>
 </form>

@@ -79,7 +79,7 @@ span.psw {
         $pssword = stripslashes($_REQUEST['pssword']);
         $pssword = mysqli_real_escape_string($con, $pssword);
         $query    = "INSERT into `Customers` (name, pssword)
-                    VALUES ('$name', '" . md5($pssword) . . "'" ")";
+                    VALUES ('$name', '" . md5($pssword) . "' )";
         $result   = mysqli_query($con, $query);
         if ($result) {
             echo "<div class='form'>
@@ -95,25 +95,25 @@ span.psw {
     } else {
 ?>
 
-<h2>Create an account</h2>
+
 
 <!--- <form action="/action_page.php" method="post"> --->
 
     <form class="form" action="" method="post">
-
+        <h2>Create an account</h2>
         <div class="container">
         <label for="uname"><b>name</b></label>
-        <input type="text" class="login-input" placeholder="Enter Username" name="uname" required>
+        <input type="text" class="login-input" placeholder="Enter Username" name="name" required>
 
         <label for="psw"><b>Pssword</b></label>
-        <input type="password" class="login-input" placeholder="Enter Password" name="psw" required>
+        <input type="password" class="login-input" placeholder="Enter Password" name="pssword" required>
         
         <button class="link"><a href="login.php">Register</a></button>
 
         </div>
 
         <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn" onclick="window.location.href='login.html';"> Cancel </button
+        <button type="button" class="cancelbtn" onclick="window.location.href='login.php';"> Cancel </button
         </div>
     </form>
 
