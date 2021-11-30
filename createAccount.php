@@ -69,29 +69,47 @@ span.psw {
 <body>
 
 <?php
-    require('databaseCode.php');
+    require __DIR__ . '/functions.php';
+    $con = startConnection();
     // When form submitted, insert values into the database.
-    if (isset($_REQUEST['name'])) {
+    if (isset($_POST['name']) && isset($_POST['pssword'])){
         // removes backslashes
-        $name = stripslashes($_REQUEST['name']);
+        $name = stripslashes($_POST['name']);
         //escapes special characters in a string
         $name = mysqli_real_escape_string($con, $name);
-        $pssword = stripslashes($_REQUEST['pssword']);
+        $pssword = stripslashes($_POST['pssword']);
         $pssword = mysqli_real_escape_string($con, $pssword);
-        $query    = "INSERT into `Customers` (name, pssword)
-                    VALUES ('$name', '" . md5($pssword) . "' )";
-        $result   = mysqli_query($con, $query);
+
+        //check for dublicate row
+        $quer = "SELECT * FROM `Customers` WHERE name='$name'";
+        $dublicate = mysqli_query($con, $quer) or die(mysql_error());
+        $rows = mysqli_num_rows($dublicate);
+
+        $result = false;
+        if($rows == 0){
+            $query    = "INSERT into `Customers` (name, pssword)
+            VALUES ('$name', '$pssword' )";
+            $result   = mysqli_query($con, $query);
+        }else{
+            echo "<div class='form'>
+            <h3>Name is already registered.</h3><br/>
+            <p class='link'>Click here to <a href='createAccount.php'>registration</a> again.</p>
+            </div>";
+        }
+        
+
         if ($result) {
             echo "<div class='form'>
                 <h3>You are registered successfully.</h3><br/>
                 <p class='link'>Click here to <a href='login.php'>Login</a></p>
                 </div>";
-        } else {
+        } /*else {
             echo "<div class='form'>
                 <h3>Required fields are missing.</h3><br/>
                 <p class='link'>Click here to <a href='createAccount.php'>registration</a> again.</p>
                 </div>";
-        }
+        }*/
+        
     } else {
 ?>
 
@@ -113,12 +131,14 @@ span.psw {
         </div>
 
         <div class="container" style="background-color:#f1f1f1">
-        <button type="button" class="cancelbtn" onclick="window.location.href='login.php';"> Cancel </button
+        <button type="button" class="cancelbtn" onclick="window.location.href='login.php';"> Cancel </button>
         </div>
     </form>
 
 <?php
+        
     }
+    closeConnection($con);
 ?>
 
 </body>

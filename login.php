@@ -74,21 +74,23 @@
 	<body>
 
 <?php
-require('databaseCode.php');
+require __DIR__ . '/functions.php';
+$con = startConnection();
 session_start();
 // When form submitted, check and create user session.
-if (isset($_POST['name'])) {
+if (isset($_POST['name']) && isset($_POST['pssword'])) {
 	$name = stripslashes($_REQUEST['name']);    // removes backslashes
 	$name = mysqli_real_escape_string($con, $name);
 	$pssword = stripslashes($_REQUEST['pssword']);
 	$pssword = mysqli_real_escape_string($con, $pssword);
 	// Check user is exist in the database
 	$query    = "SELECT * FROM `Customers` WHERE name='$name'
-				AND pssword='" . md5($pssword) . "'";
+				AND pssword='$pssword'";
 	$result = mysqli_query($con, $query) or die(mysql_error());
 	$rows = mysqli_num_rows($result);
+	$customer_ID = mysqli_query($con, "SELECT customer_ID from `Customers` where name='$name'");
 	if ($rows == 1) {
-		$_SESSION['name'] = $name;
+		$_SESSION['customer_ID'] = $customer_ID;
 		// Redirect to user dashboard page
 		header("Location: homePage.php");
 	} else {
