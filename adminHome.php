@@ -1,8 +1,3 @@
-<?php
-include("auth_session.php");
-?>
-
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -31,7 +26,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <body>
   <?php
 		require __DIR__ . '/functions.php';
-		$conn = startConnection();
+		//$conn = startConnection();
   ?>
 <div class="wrapper row1">
   <header id="header" class="clear">
@@ -45,10 +40,9 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <div class="wrapper row2">
   <nav id="topnav">
     <ul class="clear">
-      <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
-      <li><a href="#"></a></li>
-      <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
-      <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
+      <li class="active first"><a href="adminHome.php.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+      <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
+      <li><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
       <li><a href="logout.php">Logout</a></li>
     </ul>
   </nav>
@@ -56,40 +50,20 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <!-- content -->
 <div class="wrapper row3">
 <div id="container">
+
 <!-- ################################################################################################ -->
+
 <div class="full_width clear">
+    <?php
+        $sql = "SELECT amount, price FROM OrderItems WHERE OrderItems.order_ID in 
+            (SELECT order_ID FROM Orders WHERE bought = '1')";
+        $result = $conn->query($sql);
 
-  <?php
-    $sql = "SELECT item_ID, name, price, image FROM Items";
-    $result = $conn->query($sql);
-
-    echo('<table>');
-      echo('<tr>');
-      while ($row = mysqli_fetch_assoc($result)) {
-        if((htmlentities($row['item_ID']))%3 == 1){ //only display 3 items per row
-          echo('</tr>');
-          echo('<tr>');
+        while ($row = mysqli_fetch_assoc($result)) {
+            $costTot += $row[amount]*$row[price];
         }
-        echo('<td>');
-        echo('<div class="imgContainer">');
-          echo('<div>');
-                    echo('<div>');
-              echo("<h2>".htmlentities($row['name']). " - " . htmlentities($row['price']). " kr/item</h2>");
-              echo('<a href="inspectItem.php?user_id='.$_GET[user_id].'&item_id='.$row['item_ID'].'" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
-            echo('</div>');
-                    echo('<div class="imgButton">');
-              echo('<a  class="button" href="">Buy</a>');
-            echo('</div>');
-          echo('</div>');
-        echo('</div>');
-        echo('</td>');
-      }
-      echo('</tr>');
-    echo('</table>');
-  ?>
-
-<?php
-  closeConnection($conn);
-?>
+        echo('<h1>Total Earnings: '.$costTot. ' kr</h1>');
+        closeConnection($conn);
+    ?>
 </body>
 </html>

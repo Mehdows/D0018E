@@ -28,7 +28,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
     <?php
         require __DIR__ . '/functions.php';
-        $conn = startConnection();
+        //$conn = startConnection();
     ?>
 
     <style>
@@ -51,11 +51,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
-        <li><a href="#"></a></li>
-        <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
-        <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
-        <li><a href="login.php">Logout</a></li>
+      <li><a href="adminHome.php.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+      <li class="active"><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
+      <li><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
+      <li><a href="logout.php">Logout</a></li>
     </ul>
     </nav>
 </div>
@@ -67,47 +66,41 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <!-- ################################################################################################ -->
 
     <div class="full_width clear">
-    <h2>Shopping cart</h2>
+    <h2>Item List</h2>
 
     <?php
-        $sql = "SELECT name, amount, Items.price FROM OrderItems 
-        JOIN Items ON OrderItems.item_ID = Items.item_ID WHERE OrderItems.order_ID in 
-            (SELECT order_ID FROM Orders WHERE customer_ID = '$_GET[user_id]' AND bought = '0')";
-        $result = $conn->query($sql);
+        $sql = "SELECT item_ID, name, stock, price FROM Items";
+        //$result = $conn->query($sql);
     ?>
 
     <table style="width:100%">
         <tr>
-            <th>Item</th>
-            <th>Amount</th>
-            <th>Cost</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Edit</th>
         </tr>
 
         <?php
             while ($row = mysqli_fetch_assoc($result)) {
                 echo('
                     <tr>
+                    <td>'.$row[item_ID].'</td>
                     <td>'.$row[name].'</td>
-                    <td>'.$row[amount].'</td>
+                    <td>'.$row[stock].'</td>
                     <td>'.$row[price].'</td>
+                    <td><a href="editItem.php?user_id='.$_GET[user_id].'&item_id='.$row['item_ID'].'">Edit Item</a></td>
                     </tr>
                 ');
-                $costTot += $row[amount]*$row[price];
             }
+            
         ?>
         
     </table>
 
-    <?php
-        echo('<h3>Total Cost: '.$costTot. ' kr</h3>');
-    ?>
-
-    <div class="imgButton">
-        <button value="test">Buy</button>
-    </div>
-
-    <?php
+<?php
     closeConnection($conn);
-    ?>
+?>
 </body>
 </html>

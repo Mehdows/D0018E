@@ -51,11 +51,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
-        <li><a href="#"></a></li>
-        <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
-        <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
-        <li><a href="login.php">Logout</a></li>
+    <li><a href="adminHome.php.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+      <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
+      <li class="active"><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
+      <li><a href="logout.php">Logout</a></li>
     </ul>
     </nav>
 </div>
@@ -67,7 +66,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <!-- ################################################################################################ -->
 
     <div class="full_width clear">
-    <h2>Shopping cart</h2>
+    <h2>Shopping Cart</h2>
 
     <?php
         $sql = "SELECT name, amount, Items.price FROM OrderItems 
@@ -97,15 +96,19 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         ?>
         
     </table>
+    
+    <h2>Shopping History</h2>
 
     <?php
-        echo('<h3>Total Cost: '.$costTot. ' kr</h3>');
+        //Copy sql from order history when that is done
+        $sql = "";
+    $result = $conn->query($sql);
     ?>
 
-    <div class="imgButton">
-        <button value="test">Buy</button>
-    </div>
-
+    <!-- 
+        Add the code fromt he order history page
+        -->
+    
     <?php
     closeConnection($conn);
     ?>
