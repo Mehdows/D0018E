@@ -64,6 +64,10 @@ div.full_width div{color:#666666; background-color:#fffefe;}
             $costTot += $row[amount]*$row[price];
         }
         echo('<h1>Total Earnings: '.$costTot. ' kr</h1>');
+        
+        echo('<a  class="button" href="adminItems.php?user_id='.$_GET[user_id].'">Items</a>');
+        echo('<a  class="button" href="adminUsers.php?user_id='.$_GET[user_id].'">Customers</a>');
+
         closeConnection($conn);
     ?>
 </body>
