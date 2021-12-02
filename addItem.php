@@ -67,50 +67,45 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
 <?php
 
-    if ( isset($_POST['name']) && isset($_POST['pssword']) && isset($_POST['admin'])) {
+    if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
+        && isset($_POST['price']) && isset($_POST['stock'])) {
 
-        if (empty($_POST['name']) || empty($_POST['pssword']) || empty($_POST['admin'])) {
+        if (empty($_POST['name']) || empty($_POST['image']) || empty($_POST['info'])
+            || empty($_POST['price']) || empty($_POST['stock'])) {
             echo("You may not leave fields empty");
             echo "<br>";
             goto exitIf;
         }
 
-        $stmt = $conn->prepare("UPDATE Customers SET name = ?, pssword = ?, admin = ? WHERE customer_ID = $_GET[customer_id]");
+        $stmt = $conn->prepare("INSERT INTO Items (name, stock, price, info, image) VALUES (?, ?, ?, ?, ?)");
 
         $name = $_POST['name'];
-        $pssword = $_POST['pssword'];
-        $admin = $_POST['admin'];
+        $stock = $_POST['stock'];
+        $price = $_POST['price'];
+        $info = $_POST['info'];
+        $image = $_POST['image'];
 
-        $stmt->bind_param("ssi", $name, $pssword, $admin);
+        $stmt->bind_param("siiss", $name, $stock, $price, $info, $image);
         $stmt->execute();
 
         exitIf:
     }
 
-    $sql = "SELECT * FROM Customers WHERE customer_ID = $_GET[customer_id]";
-    $result = $conn->query($sql);
-    $row = mysqli_fetch_assoc($result);
-
-    //The form
-    $n = htmlentities($row['name']);
-    $p = htmlentities($row['pssword']);
-    $a = htmlentities($row['admin']);
-    $id = $row['item_ID'];
-
     ?>
-    <p>Edit Customer</p>
-    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET[user_id] . '&customer_id=' . $_GET[customer_id]);?>">
+    <p>Edit Item</p>
+    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET[user_id]);?>">
     <p>Name:
-    <input type="text" name="name" value="<?= $n ?>"></p>
-    <p>Password:
-    <input type="text" name="pssword" value="<?= $p ?>"></p>
-    <p>Admin:
-    <input type="radio" name="admin" <?php if ($a == 1) echo "checked";?> value="1">Yes
-    <input type="radio" name="admin" <?php if ($a == 0) echo "checked";?> value="0">No</p>
-    
-    <input type="hidden" name="item_ID" value="<?= $id ?>">
-    <p><input type="submit" value="Update"/>
-    <a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Cancel</a></p>
+    <input type="text" name="name" value=""></p>
+    <p>Stock:
+    <input type="text" name="stock" value=""></p>
+    <p>Price:
+    <input type="text" name="price" value=""></p>
+    <p>Info:
+    <textarea name="info" rows="5" cols="60"></textarea></p>
+    <p>Image:
+    <textarea name="image" rows="2" cols="60"></textarea></p>
+    <p><input type="submit" value="Add Item"/>
+    <a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Cancel</a></p>
     </form>
 
 

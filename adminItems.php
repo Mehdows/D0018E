@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles/layout.css" type="text/css" media="all">
 <link rel="stylesheet" href="styles/mediaqueries.css" type="text/css" media="all">
+<link rel="stylesheet" href="styles/button.css" type="text/css" media="all">
 <script src="scripts/jquery.1.9.0.min.js"></script>
 <script src="scripts/jquery-mobilemenu.min.js"></script>
 <!--[if lt IE 9]>
@@ -100,6 +101,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     </table>
 
 <?php
+    echo "<br>";
+    echo('<a  class="button" href="addItem.php?user_id='.$_GET[user_id].'">Add new item</a>');
     closeConnection($conn);
 ?>
 </body>

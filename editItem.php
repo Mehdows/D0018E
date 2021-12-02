@@ -67,13 +67,15 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
 <?php
 
-    if (empty($_POST['name']) || empty($_POST['image']) || empty($_POST['info'])
-    || empty($_POST['price']) || empty($_POST['stock'])) {
-        echo("You may not leave fields empty");
-        echo "<br>";
-
-    }else if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
+    if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
     && isset($_POST['price']) && isset($_POST['stock'])) {
+
+        if (empty($_POST['name']) || empty($_POST['image']) || empty($_POST['info'])
+            || empty($_POST['price']) || empty($_POST['stock'])) {
+            echo("You may not leave fields empty");
+            echo "<br>";
+            goto exitIf;
+        }
 
         $stmt = $conn->prepare("UPDATE Items SET name = ?, stock= ?, price = ?, info = ?, image = ? WHERE item_ID = $_GET[item_id]");
 
@@ -85,6 +87,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
         $stmt->bind_param("siiss", $name, $stock, $price, $info, $image);
         $stmt->execute();
+
+        exitIf:
     }
 
     $sql = "SELECT * FROM Items WHERE item_ID = $_GET[item_id]";
