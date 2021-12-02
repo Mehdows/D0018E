@@ -85,12 +85,17 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
         <?php
             while ($row = mysqli_fetch_assoc($result)) {
+                if ($row[admin] == 0) {
+                    $adminTemp = "No";
+                } else {
+                    $adminTemp = "Yes";
+                }
                 echo('
                     <tr>
                     <td>'.$row[customer_ID].'</td>
                     <td>'.$row[name].'</td>
                     <td>'.$row[pssword].'</td>
-                    <td>'.$row[Admin].'</td>
+                    <td>'.$adminTemp.'</td>
                     <td><a href="editUser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Edit User</a></td>
                     <td><a href="adminHistory.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
                     </tr>
