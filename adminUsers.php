@@ -79,8 +79,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
             <th>Name</th>
             <th>Password</th>
             <th>Admin</th>
-            <th>Edit User</th>
             <th>View Cart/History</th>
+            <th>Edit/Delete</th>
         </tr>
 
         <?php
@@ -96,8 +96,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$row[name].'</td>
                     <td>'.$row[pssword].'</td>
                     <td>'.$adminTemp.'</td>
-                    <td><a href="editUser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Edit User</a></td>
                     <td><a href="adminHistory.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
+                    <td><a href="editUser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Edit</a>/
+                        <a href="deleteUser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Delete</a>
+                    </td>
                     </tr>
                 ');
             }
