@@ -26,7 +26,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <body>
   <?php
 		require __DIR__ . '/functions.php';
-		//$conn = startConnection();
+		$conn = startConnection();
   ?>
 <div class="wrapper row1">
   <header id="header" class="clear">
@@ -40,7 +40,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <div class="wrapper row2">
   <nav id="topnav">
     <ul class="clear">
-      <li class="active first"><a href="adminHome.php.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+      <li class="active first"><a href="adminHome.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
       <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
       <li><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
       <li><a href="logout.php">Logout</a></li>
@@ -59,6 +59,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
             (SELECT order_ID FROM Orders WHERE bought = '1')";
         $result = $conn->query($sql);
 
+        $costTot = 0;
         while ($row = mysqli_fetch_assoc($result)) {
             $costTot += $row[amount]*$row[price];
         }

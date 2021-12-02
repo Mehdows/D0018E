@@ -51,7 +51,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-    <li><a href="adminHome.php.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+    <li><a href="adminHome.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
       <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
       <li class="active"><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
       <li><a href="logout.php">Logout</a></li>
@@ -106,7 +106,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     ?>
 
     <!-- 
-        Add the code fromt he order history page
+        Add the code from he order history page
         -->
     
     <?php

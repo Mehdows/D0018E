@@ -28,7 +28,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
     <?php
         require __DIR__ . '/functions.php';
-        //$conn = startConnection();
+        $conn = startConnection();
     ?>
 
     <style>
@@ -51,7 +51,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-      <li><a href="adminHome.php.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+      <li><a href="adminHome.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
       <li class="active"><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
       <li><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
       <li><a href="logout.php">Logout</a></li>
@@ -70,15 +70,15 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
     <?php
         $sql = "SELECT item_ID, name, stock, price FROM Items";
-        //$result = $conn->query($sql);
+        $result = $conn->query($sql);
     ?>
 
     <table style="width:100%">
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Stock</th>
             <th>Price</th>
+            <th>Stock</th>
             <th>Edit</th>
         </tr>
 
@@ -88,8 +88,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <tr>
                     <td>'.$row[item_ID].'</td>
                     <td>'.$row[name].'</td>
-                    <td>'.$row[stock].'</td>
                     <td>'.$row[price].'</td>
+                    <td>'.$row[stock].'</td>
                     <td><a href="editItem.php?user_id='.$_GET[user_id].'&item_id='.$row['item_ID'].'">Edit Item</a></td>
                     </tr>
                 ');
