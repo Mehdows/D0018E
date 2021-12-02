@@ -112,9 +112,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <p>Price:
     <input type="text" name="price" value="<?= $p ?>"></p>
     <p>Info:
-    <input type="text" name="info" value="<?= $in ?>"></p>
+    <textarea name="info" rows="5" cols="60"><?= $in ?></textarea></p>
     <p>Image:
-    <input type="text" name="image" value="<?= $im ?>"></p>
+    <textarea name="image" rows="2" cols="60"><?= $im ?></textarea></p>
     <input type="hidden" name="item_ID" value="<?= $id ?>">
     <p><input type="submit" value="Update"/>
     <a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Cancel</a></p>
