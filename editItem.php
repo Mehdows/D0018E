@@ -12,17 +12,6 @@
 <link rel="stylesheet" href="styles/mediaqueries.css" type="text/css" media="all">
 <script src="scripts/jquery.1.9.0.min.js"></script>
 <script src="scripts/jquery-mobilemenu.min.js"></script>
-
-
-<!--[if lt IE 9]>
-<link rel="stylesheet" href="styles/ie.css" type="text/css" media="all">
-<script src="scripts/ie/css3-mediaqueries.min.js"></script>
-<script src="scripts/ie/ie9.js"></script>
-<script src="scripts/ie/html5shiv.min.js"></script>
-<![endif]-->
-
-<!-- BEFORE USING THIS FRAMEWORK REMOVE THIS DEMO STYLING - ONLY USED TO EMPHASISE THE DIV CONTAINERS IN THE CONTENT AREA -->
-
 <style type="text/css">
 
 div.full_width{margin-top:20px;}
@@ -77,17 +66,14 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div id="container">
 
 <?php
-    if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
-    && isset($_POST['price']) && isset($_POST['stock'])) {
 
-        // Data validation
-        /*
-        if ( strlen($_POST['name']) < 1 || strlen($_POST['image'])) {
-            echo("test2");
-            $_SESSION['error'] = 'Missing data';
-            header("Location: test.php");
-            return;
-        }*/
+    if (empty($_POST['name']) || empty($_POST['image']) || empty($_POST['info'])
+    || empty($_POST['price']) || empty($_POST['stock'])) {
+        echo("You may not leave fields empty");
+        echo "<br>";
+
+    }else if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
+    && isset($_POST['price']) && isset($_POST['stock'])) {
 
         $stmt = $conn->prepare("UPDATE Items SET name = ?, stock= ?, price = ?, info = ?, image = ? WHERE item_ID = $_GET[item_id]");
 
