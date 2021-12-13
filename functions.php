@@ -23,11 +23,4 @@ function closeConnection($conn) {
   //echo "Closed connection";
 }
 
-
-function getAllItems($conn) {
-    $sql = "SELECT item_ID, name, price, image FROM Items";
-    $result = $conn->query($sql);
-    
-    return $result;
-}
 ?>

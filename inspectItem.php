@@ -123,7 +123,9 @@ button.primaryContained:hover {
 <div id="container">
 
 <?php
-    $sql = "SELECT name, stock, price, info, image FROM Items WHERE item_ID = $_GET[item_id]";
+    
+    $curr_id = $_GET['item_id'];
+    $sql = "SELECT name, stock, price, info, image FROM Items WHERE item_ID = $curr_id";
     $result = $conn->query($sql);
     $row = mysqli_fetch_assoc($result);
 
@@ -182,13 +184,13 @@ button.primaryContained:hover {
                     <button v-on:click="addItem()" class='primaryContained float-right' type="submit">Add Comment</button>
                 </div>
             </div>
-        </div><
+        </div>
     </section>
 
 
 </div>
 </div>
- -->
+
     <!-- ################################################################################################ -->
 
 <!-- Footer -->

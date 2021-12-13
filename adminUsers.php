@@ -97,7 +97,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$row[pssword].'</td>
                     <td>'.$adminTemp.'</td>
                     <td><a href="adminHistory.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
-                    <td><a href="editUser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Edit</a>/
+                    <td><a href="edituser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Edit</a>/
                         <a href="deleteUser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Delete</a>
                     </td>
                     </tr>
