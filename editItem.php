@@ -67,17 +67,19 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
 <?php
 
+    $item_id = $_GET['item_id'];
+
     if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
     && isset($_POST['price']) && isset($_POST['stock'])) {
 
         if (empty($_POST['name']) || empty($_POST['image']) || empty($_POST['info'])
-            || empty($_POST['price']) || empty($_POST['stock'])) {
+            || empty($_POST['price'])) {
             echo("You may not leave fields empty");
             echo "<br>";
             goto exitIf;
         }
 
-        $stmt = $conn->prepare("UPDATE Items SET name = ?, stock= ?, price = ?, info = ?, image = ? WHERE item_ID = $_GET[item_id]");
+        $stmt = $conn->prepare("UPDATE Items SET name = ?, stock= ?, price = ?, info = ?, image = ? WHERE item_ID = $item_id");
 
         $name = $_POST['name'];
         $stock = $_POST['stock'];
@@ -91,7 +93,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         exitIf:
     }
 
-    $sql = "SELECT * FROM Items WHERE item_ID = $_GET[item_id]";
+    $sql = "SELECT * FROM Items WHERE item_ID = $item_id";
     $result = $conn->query($sql);
     $row = mysqli_fetch_assoc($result);
 

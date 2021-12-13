@@ -13,7 +13,7 @@ function startConnection() {
   if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
   }
-  echo "Connected successfully";
+  //echo "Connected successfully";
   return $conn;
 }
 
@@ -21,7 +21,7 @@ function startConnection() {
 
 function closeConnection($conn) {
   $conn->close();
-  echo "Closed connection";
+  //echo "Closed connection";
 }
 
 ?>

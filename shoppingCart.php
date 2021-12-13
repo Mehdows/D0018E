@@ -70,10 +70,11 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <h2>Shopping cart</h2>
 
     <?php
+        $user_id = $_GET['user_id'];
         $sql = "SELECT name, amount, Items.price FROM OrderItems 
         JOIN Items ON OrderItems.item_ID = Items.item_ID WHERE OrderItems.order_ID in 
-            (SELECT order_ID FROM Orders WHERE customer_ID = '$_GET[user_id]' AND bought = '0')";
-        $result = $conn->query($sql);
+            (SELECT order_ID FROM Orders WHERE customer_ID = $user_id AND bought = '0')";
+        $result = $conn->query($sql);'
     ?>
 
     <table style="width:100%">

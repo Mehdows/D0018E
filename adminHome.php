@@ -40,9 +40,9 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <div class="wrapper row2">
   <nav id="topnav">
     <ul class="clear">
-      <li class="active first"><a href="adminHome.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
-      <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
-      <li><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
+      <li class="active first"><a href="adminHome.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
+      <li><a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Items</a></li>
+      <li><a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Users</a></li>
       <li><a href="logout.php">Logout</a></li>
     </ul>
   </nav>
@@ -65,8 +65,8 @@ div.full_width div{color:#666666; background-color:#fffefe;}
         }
         echo('<h1>Total Earnings: '.$costTot. ' kr</h1>');
         
-        echo('<a  class="button" href="adminItems.php?user_id='.$_GET[user_id].'">Items</a>');
-        echo('<a  class="button" href="adminUsers.php?user_id='.$_GET[user_id].'">Customers</a>');
+        echo('<a  class="button" href="adminItems.php?user_id='.$_GET['user_id'].'">Items</a>');
+        echo('<a  class="button" href="adminUsers.php?user_id='.$_GET['user_id'].'">Customers</a>');
 
         closeConnection($conn);
     ?>

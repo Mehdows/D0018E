@@ -51,9 +51,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-      <li><a href="adminHome.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
-      <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
-      <li class="active"><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
+      <li><a href="adminHome.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
+      <li><a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Items</a></li>
+      <li class="active"><a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Users</a></li>
       <li><a href="logout.php">Logout</a></li>
     </ul>
     </nav>
@@ -96,9 +96,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$row[name].'</td>
                     <td>'.$row[pssword].'</td>
                     <td>'.$adminTemp.'</td>
-                    <td><a href="adminHistory.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
-                    <td><a href="edituser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Edit</a>/
-                        <a href="deleteUser.php?user_id='.$_GET[user_id].'&customer_id='.$row['customer_ID'].'">Delete</a>
+                    <td><a href="adminHistory.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
+                    <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a>/
+                        <a href="deleteUser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Delete</a>
                     </td>
                     </tr>
                 ');

@@ -48,9 +48,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-    <li><a href="adminHome.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
-      <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
-      <li><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
+    <li><a href="adminHome.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
+      <li><a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Items</a></li>
+      <li><a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Users</a></li>
       <li><a href="logout.php">Logout</a></li>
     </ul>
     </nav>
@@ -67,15 +67,17 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
 <?php
 
+    $customer_id = $_GET['customer_id'];
+
     if ( isset($_POST['name']) && isset($_POST['pssword']) && isset($_POST['admin'])) {
 
-        if (empty($_POST['name']) || empty($_POST['pssword']) || empty($_POST['admin'])) {
+        if (empty($_POST['name']) || empty($_POST['pssword'])) {
             echo("You may not leave fields empty");
             echo "<br>";
             goto exitIf;
         }
 
-        $stmt = $conn->prepare("UPDATE Customers SET name = ?, pssword = ?, admin = ? WHERE customer_ID = $_GET[customer_id]");
+        $stmt = $conn->prepare("UPDATE Customers SET name = ?, pssword = ?, admin = ? WHERE customer_ID = $customer_id");
 
         $name = $_POST['name'];
         $pssword = $_POST['pssword'];
@@ -87,7 +89,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         exitIf:
     }
 
-    $sql = "SELECT * FROM Customers WHERE customer_ID = $_GET[customer_id]";
+    $sql = "SELECT * FROM Customers WHERE customer_ID = $customer_id";
     $result = $conn->query($sql);
     $row = mysqli_fetch_assoc($result);
 
@@ -99,7 +101,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
     ?>
     <p>Edit Customer</p>
-    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET[user_id] . '&customer_id=' . $_GET[customer_id]);?>">
+    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id'] . '&customer_id=' . $_GET['customer_id']);?>">
     <p>Name:
     <input type="text" name="name" value="<?= $n ?>"></p>
     <p>Password:
@@ -110,7 +112,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     
     <input type="hidden" name="item_ID" value="<?= $id ?>">
     <p><input type="submit" value="Update"/>
-    <a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Cancel</a></p>
+    <a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a></p>
     </form>
 
 

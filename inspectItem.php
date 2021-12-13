@@ -124,8 +124,8 @@ button.primaryContained:hover {
 
 <?php
     
-    $curr_id = $_GET['item_id'];
-    $sql = "SELECT name, stock, price, info, image FROM Items WHERE item_ID = $curr_id";
+    $item_id = $_GET['item_id'];
+    $sql = "SELECT name, stock, price, info, image FROM Items WHERE item_ID = $item_id";
     $result = $conn->query($sql);
     $row = mysqli_fetch_assoc($result);
 
