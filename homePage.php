@@ -1,8 +1,3 @@
-<?php
-include("auth_session.php");
-?>
-
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -21,6 +16,7 @@ include("auth_session.php");
 <script src="scripts/ie/html5shiv.min.js"></script>
 <![endif]-->
 <!-- BEFORE USING THIS FRAMEWORK REMOVE THIS DEMO STYLING - ONLY USED TO EMPHASISE THE DIV CONTAINERS IN THE CONTENT AREA -->
+
 <style type="text/css">
 div.full_width{margin-top:20px;}
 div.full_width:first-child{margin-top:0;}
@@ -30,8 +26,8 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 </head>
 <body>
   <?php
-		require __DIR__ . '/functions.php';
-		$conn = startConnection();
+                require __DIR__ . '/functions.php';
+                $conn = startConnection();
   ?>
 <div class="wrapper row1">
   <header id="header" class="clear">
@@ -49,7 +45,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
       <li><a href="#"></a></li>
       <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
       <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
-      <li><a href="logout.php">Logout</a></li>
+      <li><a href="login.php">Logout</a></li>
     </ul>
   </nav>
 </div>
@@ -58,10 +54,10 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <div id="container">
 <!-- ################################################################################################ -->
 <div class="full_width clear">
-
+  
   <?php
     $sql = "SELECT item_ID, name, price, image FROM Items";
-    $result = $conn->query($sql);
+    $result = mysqli_query($conn, $sql);
 
     echo('<table>');
       echo('<tr>');

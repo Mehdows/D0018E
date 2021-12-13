@@ -89,10 +89,13 @@ if (isset($_POST['name']) && isset($_POST['pssword'])) {
 	$result = mysqli_query($con, $query) or die(mysql_error());
 	$rows = mysqli_num_rows($result);
 	$customer_ID = mysqli_query($con, "SELECT customer_ID from `Customers` where name='$name'");
+	$res = mysqli_fetch_assoc($customer_ID);
+	$id = $res["customer_ID"];
+	
 	if ($rows == 1) {
-		$_SESSION['customer_ID'] = $customer_ID;
+		//$_POST[user_id] = $customer_ID;
 		// Redirect to user dashboard page
-		header("Location: homePage.php");
+		header("Location: homepage.php?user_id=$id");
 	} else {
 		echo "<div class='form'>
 			<h3>Incorrect Username/password.</h3><br/>
@@ -143,6 +146,7 @@ if (isset($_POST['name']) && isset($_POST['pssword'])) {
 
 <?php
 }
+closeConnection($con);
 ?>
 
 	</body>
