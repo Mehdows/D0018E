@@ -51,10 +51,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
         <li><a href="#"></a></li>
-        <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
-        <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
+        <li><a href="orderHistory.php?user_id=<?php echo($_GET['user_id'])?>">Order history</a></li>
+        <li><a href="shoppingCart.php?user_id=<?php echo($_GET['user_id'])?>">Cart</a></li>
         <li><a href="login.php">Logout</a></li>
     </ul>
     </nav>
@@ -70,10 +70,11 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <h2>Shopping cart</h2>
 
     <?php
+        $user_id = $_GET['user_id'];
         $sql = "SELECT name, amount, Items.price FROM OrderItems 
         JOIN Items ON OrderItems.item_ID = Items.item_ID WHERE OrderItems.order_ID in 
-            (SELECT order_ID FROM Orders WHERE customer_ID = '$_GET[user_id]' AND bought = '0')";
-        $result = $conn->query($sql);
+            (SELECT order_ID FROM Orders WHERE customer_ID = $user_id AND bought = '0')";
+        $result = $conn->query($sql);'
     ?>
 
     <table style="width:100%">
@@ -106,5 +107,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         <button value="test">Buy</button>
     </div>
 
+    <?php
+    closeConnection($conn);
+    ?>
 </body>
 </html>

@@ -16,18 +16,27 @@
 <![endif]-->
 <!-- BEFORE USING THIS FRAMEWORK REMOVE THIS DEMO STYLING - ONLY USED TO EMPHASISE THE DIV CONTAINERS IN THE CONTENT AREA -->
 <style type="text/css">
+
 div.full_width{margin-top:20px;}
 div.full_width:first-child{margin-top:0;}
 div.full_width div{color:#666666; background-color:#DEDEDE;}
+
 </style>
 <!-- END DEMO STYLING -->
 </head>
 <body>
+
+    <?php
+        require __DIR__ . '/functions.php';
+        $conn = startConnection();
+    ?>
+
     <style>
         table, th, td {
             border:1px solid black;
         }
-        </style>
+    </style>
+
 <div class="wrapper row1">
     <header id="header" class="clear">
     <div id="hgroup">
@@ -36,70 +45,71 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     </div>
     </header>
 </div>
+
 <!-- ################################################################################################ -->
+
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.php">Homepage</a></li>
-        <li><a href="#"></a></li>
-        <li><a href="orderHistory.php">Order history</a></li>
-        <li><a href="shoppingCart.php">Cart</a></li>
-        <li><a href="login.php">Logout</a></li>
+      <li><a href="adminHome.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
+      <li><a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Items</a></li>
+      <li class="active"><a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Users</a></li>
+      <li><a href="logout.php">Logout</a></li>
     </ul>
     </nav>
 </div>
+
 <!-- content -->
 <div class="wrapper row3">
 <div id="container">
+
 <!-- ################################################################################################ -->
+
     <div class="full_width clear">
-    <h2>Orders</h2>
+    <h2>Item List</h2>
+
+    <?php
+        $sql = "SELECT customer_ID, name, pssword, admin FROM Customers";
+        $result = $conn->query($sql);
+    ?>
 
     <table style="width:100%">
-<tr>
-            <th>Ordernumber</th>
-            <th>Cost</th>
-        </tr>
         <tr>
-            <td>#001</td>
-            <td>6</td>
-            
+            <th>ID</th>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Admin</th>
+            <th>View Cart/History</th>
+            <th>Edit/Delete</th>
         </tr>
-        <tr>
-            <td>#002</td>
-            <td>3</td>
+
+        <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                if ($row[admin] == 0) {
+                    $adminTemp = "No";
+                } else {
+                    $adminTemp = "Yes";
+                }
+                echo('
+                    <tr>
+                    <td>'.$row[customer_ID].'</td>
+                    <td>'.$row[name].'</td>
+                    <td>'.$row[pssword].'</td>
+                    <td>'.$adminTemp.'</td>
+                    <td><a href="adminHistory.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
+                    <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a>/
+                        <a href="deleteUser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Delete</a>
+                    </td>
+                    </tr>
+                ');
+            }
             
-        </tr>
+        ?>
+        
     </table>
 
-<!--
-        <div class="full_width">Order</div>
-        <div class="one_third">One Third</div>
-        <div class="one_third">One Third</div>
-    </div>
-
-    <div class="full_width clear">
-        <div class="one_third first">One Third</div>
-        <div class="two_third">Two Third</div>
-    </div>
-
-    <div class="full_width clear">
-        <div class="two_third first">Two Third</div>
-        <div class="one_third">One Third</div>
-    </div>
--->
-
-    <!-- ################################################################################################ -->
-</div>
-</div>
-<!-- Footer -->
-<!--
-<div class="wrapper row4">
-    <footer id="footer" class="clear">
-    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>
-    <p class="fl_right">Template by <a target="_blank" href="https://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
-    </footer>
-</div>
--->
+<?php
+    closeConnection($conn);
+?>
 </body>
 </html>

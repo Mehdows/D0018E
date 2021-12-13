@@ -16,18 +16,27 @@
 <![endif]-->
 <!-- BEFORE USING THIS FRAMEWORK REMOVE THIS DEMO STYLING - ONLY USED TO EMPHASISE THE DIV CONTAINERS IN THE CONTENT AREA -->
 <style type="text/css">
+
 div.full_width{margin-top:20px;}
 div.full_width:first-child{margin-top:0;}
 div.full_width div{color:#666666; background-color:#DEDEDE;}
+
 </style>
 <!-- END DEMO STYLING -->
 </head>
 <body>
+
+    <?php
+        require __DIR__ . '/functions.php';
+        $conn = startConnection();
+    ?>
+
     <style>
         table, th, td {
             border:1px solid black;
         }
-        </style>
+    </style>
+
 <div class="wrapper row1">
     <header id="header" class="clear">
     <div id="hgroup">
@@ -36,70 +45,73 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     </div>
     </header>
 </div>
+
 <!-- ################################################################################################ -->
+
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.php">Homepage</a></li>
-        <li><a href="#"></a></li>
-        <li><a href="orderHistory.php">Order history</a></li>
-        <li><a href="shoppingCart.php">Cart</a></li>
-        <li><a href="login.php">Logout</a></li>
+    <li><a href="adminHome.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
+      <li><a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Items</a></li>
+      <li class="active"><a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Users</a></li>
+      <li><a href="logout.php">Logout</a></li>
     </ul>
     </nav>
 </div>
+
 <!-- content -->
 <div class="wrapper row3">
 <div id="container">
+
 <!-- ################################################################################################ -->
+
     <div class="full_width clear">
-    <h2>Orders</h2>
+    <h2>Shopping Cart</h2>
+
+    <?php
+        $customer_id = $_GET['customer_id'];
+        $sql = "SELECT name, amount, Items.price FROM OrderItems 
+        JOIN Items ON OrderItems.item_ID = Items.item_ID WHERE OrderItems.order_ID in 
+            (SELECT order_ID FROM Orders WHERE customer_ID = $customer_id AND bought = '0')";
+        $result = $conn->query($sql);
+    ?>
 
     <table style="width:100%">
-<tr>
-            <th>Ordernumber</th>
+        <tr>
+            <th>Item</th>
+            <th>Amount</th>
             <th>Cost</th>
         </tr>
-        <tr>
-            <td>#001</td>
-            <td>6</td>
-            
-        </tr>
-        <tr>
-            <td>#002</td>
-            <td>3</td>
-            
-        </tr>
+
+        <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo('
+                    <tr>
+                    <td>'.$row[name].'</td>
+                    <td>'.$row[amount].'</td>
+                    <td>'.$row[price].'</td>
+                    </tr>
+                ');
+                $costTot += $row[amount]*$row[price];
+            }
+        ?>
+        
     </table>
+    
+    <h2>Shopping History</h2>
 
-<!--
-        <div class="full_width">Order</div>
-        <div class="one_third">One Third</div>
-        <div class="one_third">One Third</div>
-    </div>
+    <?php
+        //Copy sql from order history when that is done
+        $sql = "";
+    $result = $conn->query($sql);
+    ?>
 
-    <div class="full_width clear">
-        <div class="one_third first">One Third</div>
-        <div class="two_third">Two Third</div>
-    </div>
-
-    <div class="full_width clear">
-        <div class="two_third first">Two Third</div>
-        <div class="one_third">One Third</div>
-    </div>
--->
-
-    <!-- ################################################################################################ -->
-</div>
-</div>
-<!-- Footer -->
-<!--
-<div class="wrapper row4">
-    <footer id="footer" class="clear">
-    <p class="fl_left">Copyright &copy; 2018 - All Rights Reserved - <a href="#">Domain Name</a></p>
-    <p class="fl_right">Template by <a target="_blank" href="https://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
-    </footer>
-</div>
--->
+    <!-- 
+        Add the code from he order history page
+        -->
+    
+    <?php
+    closeConnection($conn);
+    ?>
 </body>
 </html>
