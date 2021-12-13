@@ -40,11 +40,11 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage">Homepage</a></li>
+        <li class="active first"><a href="homePage.php">Homepage</a></li>
         <li><a href="#"></a></li>
-        <li><a href="orderHistory">Order history</a></li>
-        <li><a href="shoppingCart">Cart</a></li>
-        <li><a href="login">Logout</a></li>
+        <li><a href="orderHistory.php">Order history</a></li>
+        <li><a href="shoppingCart.php">Cart</a></li>
+        <li><a href="login.php">Logout</a></li>
     </ul>
     </nav>
 </div>

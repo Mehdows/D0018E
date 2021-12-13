@@ -104,10 +104,10 @@ button.primaryContained:hover {
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
+        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
         <li><a href="#"></a></li>
-        <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
-        <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
+        <li><a href="orderHistory.php?user_id=<?php echo($_GET['user_id'])?>">Order history</a></li>
+        <li><a href="shoppingCart.php?user_id=<?php echo($_GET['user_id'])?>">Cart</a></li>
         <li><a href="login.php">Logout</a></li>
     </ul>
     </nav>
@@ -190,7 +190,6 @@ button.primaryContained:hover {
 
 </div>
 </div>
-
     <!-- ################################################################################################ -->
 
 <!-- Footer -->
