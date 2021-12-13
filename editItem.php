@@ -48,10 +48,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-    <li><a href="adminHome.php?user_id=<?php echo($_GET[user_id])?>">Homepage</a></li>
-      <li><a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Items</a></li>
-      <li><a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Users</a></li>
-      <li><a href="logout.php">Logout</a></li>
+    <li><a href="adminHome.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
+    <li><a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Items</a></li>
+    <li><a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Users</a></li>
+    <li><a href="logout.php">Logout</a></li>
     </ul>
     </nav>
 </div>
@@ -108,7 +108,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     $id = $row['item_ID'];
     ?>
     <p>Edit Item</p>
-    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET[user_id] . '&item_id=' . $_GET[item_id]);?>">
+    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id'] . '&item_id=' . $_GET['item_id']);?>">
     <p>Name:
     <input type="text" name="name" value="<?= $n ?>"></p>
     <p>Stock:
@@ -121,7 +121,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <textarea name="image" rows="2" cols="60"><?= $im ?></textarea></p>
     <input type="hidden" name="item_ID" value="<?= $id ?>">
     <p><input type="submit" value="Update"/>
-    <a href="adminItems.php?user_id=<?php echo($_GET[user_id])?>">Cancel</a></p>
+    <a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a></p>
     </form>
 
 
