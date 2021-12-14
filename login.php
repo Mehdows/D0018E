@@ -92,7 +92,7 @@ if (isset($_POST['name']) && isset($_POST['pssword'])) {
 	if ($rows == 1) {
 		$_SESSION['customer_ID'] = $customer_ID;
 		// Redirect to user dashboard page
-		header("Location: homePage.php");
+		header("Location: homePage.php?user_id=8");
 	} else {
 		echo "<div class='form'>
 			<h3>Incorrect Username/password.</h3><br/>
@@ -130,7 +130,7 @@ if (isset($_POST['name']) && isset($_POST['pssword'])) {
 			required
 		/>
 
-		<button class="link"><input type="submit" value="Login" name="submit" class="login-button" >Login</input></button>
+		<label class="link"><input type="submit" value="Login" name="submit" class="login-button" ></input></label>
 
 	</div>
 

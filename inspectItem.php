@@ -6,8 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles/layout.css" type="text/css" media="all">
 <link rel="stylesheet" href="styles/mediaqueries.css" type="text/css" media="all">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+
 <script src="scripts/jquery.1.9.0.min.js"></script>
 <script src="scripts/jquery-mobilemenu.min.js"></script>
+
 
 
 <!--[if lt IE 9]>
@@ -169,6 +177,56 @@ button.primaryContained:hover {
         </div>
     </div>
 
+
+<div class="panel panel-default">
+<div class="panel-heading">Submit Your Comments</div>
+    <div class="panel-body">
+    <form method="post">
+	    <div class="form-group">
+	        <label for="exampleInputPassword1">Subject</label>
+	        <textarea name="comment" class="form-control" rows="3"></textarea>
+	    </div>
+	<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+    </div>
+</div>
+
+<?php if(isset($smsg)){ ?><div class="alert alert-success" role="alert"> <?php echo $smsg; ?> </div><?php } ?>
+<?php if(isset($fmsg)){ ?><div class="alert alert-danger" role="alert"> <?php echo $fmsg; ?> </div><?php } ?>
+
+<?php
+if(isset($_POST) & !empty($_POST)){
+	$comment = mysqli_real_escape_string($conn, $_POST['comment']);
+    $item_id = $_GET['item_id'];
+    $user_id = $_GET['user_id'];
+
+	$isql = "INSERT INTO 'Comments' (customer_ID, item_id, comment) VALUES ('$user_id', '$item_id', '$comment')";
+	$ires = mysqli_query($conn, $isql) or die(mysqli_error($conn));
+	if($ires){
+		$smsg = "Your Comment Submitted Successfully";
+	}else{
+		$fmsg = "Failed to Submit Your Comment";
+	}
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--
     <section id="app">
         <div class="container">
             <div class="row">
@@ -186,7 +244,7 @@ button.primaryContained:hover {
             </div>
         </div>
     </section>
-
+    -->
 
 </div>
 </div>
