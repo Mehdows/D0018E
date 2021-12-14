@@ -44,15 +44,9 @@ div.full_width div{color:#666666; background-color:#fffefe;}
     <ul class="clear">
       <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>     
       <li><a href="#"></a></li>
-<<<<<<< HEAD
-      <li><a href="orderHistory.php?user_id=<?php echo($_GET[user_id])?>">Order history</a></li>
-      <li><a href="shoppingCart.php?user_id=<?php echo($_GET[user_id])?>">Cart</a></li>
-      <li><a href="login.php">Logout</a></li>
-=======
       <li><a href="orderHistory.php?user_id=<?php echo($_GET['user_id'])?>">Order history</a></li>
       <li><a href="shoppingCart.php?user_id=<?php echo($_GET['user_id'])?>">Cart</a></li>
       <li><a href="logout.php">Logout</a></li>
->>>>>>> 07c96a879327fd802f5a2122d39ca8c067d1427c
     </ul>
   </nav>
 </div>
@@ -61,12 +55,8 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <div id="container">
 <!-- ################################################################################################ -->
 <div class="full_width clear">
-<<<<<<< HEAD
-  
-=======
 
 
->>>>>>> 07c96a879327fd802f5a2122d39ca8c067d1427c
   <?php
 
     $sql = "SELECT item_ID, name, price, image FROM Items";

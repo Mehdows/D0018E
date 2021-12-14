@@ -74,7 +74,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         $sql = "SELECT name, amount, Items.price FROM OrderItems 
         JOIN Items ON OrderItems.item_ID = Items.item_ID WHERE OrderItems.order_ID in 
             (SELECT order_ID FROM Orders WHERE customer_ID = $user_id AND bought = '0')";
-        $result = $conn->query($sql);'
+        $result = $conn->query($sql);
     ?>
 
     <table style="width:100%">
@@ -85,6 +85,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         </tr>
 
         <?php
+            $costTot = 0;
             while ($row = mysqli_fetch_assoc($result)) {
                 echo('
                     <tr>
@@ -102,10 +103,59 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <?php
         echo('<h3>Total Cost: '.$costTot. ' kr</h3>');
     ?>
-
+    <form class="form" method="post" name="adress">
+        <div class="container">
+            <label for="adress"><b>adress</b></label>
+            <input type="text" 
+            placeholder="Enter Adress" 
+            name="adress" 
+            required 
+        />
+    </form>
     <div class="imgButton">
         <button value="test">Buy</button>
     </div>
+
+    <?php
+        
+        if(isset($_POST['adress'])) {
+            //CHECK IF STOCK WILL BE NEGATIVE AFTER PURCHASE
+            $order = "SELECT order_ID FROM Orders WHERE customer_ID = $user_id AND bought = 0";
+            $order_query = mysqli_query($conn, $order);
+            $order_ID = mysqli_fetch_assoc($order_query);
+            
+            $orderList = "SELECT * FROM OrderItems WHERE order_ID = $order_ID";
+            
+            
+            $stockIsEnough = TRUE;
+            while($row = mysqli_fetch_assoc($orderList)){
+                $item_ID = $row['item_ID'];
+                $amount = $row['amount'];
+                $query = "SELECT stock, 'name' FROM items WHERE item_ID = $item_ID";
+                $stock = mysqli_query($conn, $query);
+                if($stock < $amount){
+                    $stockIsEnough = false;
+                }
+
+            }
+
+            //Change to bought in database
+            if($stockIsEnough){
+                $adress = $_POST['adress'];    
+                $today = time;
+                $buyOrderQuery = "UPDATE Orders SET bought = 1, purchase_Date = $today, adress = $adress WHERE order_ID = $order_ID";
+                mysqli_query($conn, $query);
+                while($row = mysqli_fetch_assoc($orderList)) {
+                    $query = "UPDATE OrderList SET ";
+                
+            
+                }
+            }
+        }
+        
+    ?>
+
+
 
     <?php
     closeConnection($conn);
