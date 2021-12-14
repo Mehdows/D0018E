@@ -89,7 +89,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
         $stmt->bind_param("siiss", $name, $stock, $price, $info, $image);
         $stmt->execute();
-
+        
+        echo("Updated successfully");
         exitIf:
     }
 
