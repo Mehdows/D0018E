@@ -92,7 +92,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     }
 
     ?>
-    <p>Edit Item</p>
+    <p>Add Item</p>
     <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id']);?>">
     <p>Name:
     <input type="text" name="name" value=""></p>

@@ -82,8 +82,8 @@ span.psw {
 
         //check for dublicate row
         $quer = "SELECT * FROM `Customers` WHERE name='$name'";
-        $dublicate = mysqli_query($con, $quer) or die(mysql_error());
-        $rows = mysqli_num_rows($dublicate);
+        $duplicate = mysqli_query($con, $quer) or die(mysql_error());
+        $rows = mysqli_num_rows($duplicate);
 
         $result = false;
         if($rows == 0){
