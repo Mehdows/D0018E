@@ -92,11 +92,11 @@ if (isset($_POST['name']) && isset($_POST['pssword'])) {
 	if ($numrows == 1) {
 		if ($row["admin"] == 1){
 			// Redirect to admin home page
-			mmysqli_commit($conn);
+			mysqli_commit($conn);
 			header('Location: adminHome.php?user_id='.$row["customer_ID"]);
 		} else {
 			// Redirect to user dashboard page
-			mmysqli_commit($conn);
+			mysqli_commit($conn);
 			header('Location: homePage.php?user_id='.$row["customer_ID"]);
 		}
 	} else {

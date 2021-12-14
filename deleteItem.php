@@ -73,7 +73,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
         $stmt->bind_param("i", $id);
         $stmt->execute();
-        mmysqli_commit($conn);
+        mysqli_commit($conn);
         header( 'Location: adminItems.php?user_id='.$_GET['user_id']);
         return;
     }

@@ -22,7 +22,7 @@ function startConnection() {
 
 
 function closeConnection($conn) {
-  mmysqli_commit($conn);
+  mysqli_commit($conn);
   $conn->close();
   //echo "Closed connection";
 }
