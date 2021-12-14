@@ -67,32 +67,35 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
 <?php
 
-    if ( isset($_POST['delete']) && isset($_POST['customer_id']) ) {
-        $stmt = $conn->prepare("DELETE FROM Customers WHERE customer_ID = ?");
-        $id = $_POST['customer_id'];
+    if ( isset($_POST['delete']) && isset($_POST['item_id']) ) {
+        $stmt = $conn->prepare("DELETE FROM Items WHERE item_ID = ?");
+        $id = $_POST['item_id'];
 
         $stmt->bind_param("i", $id);
         $stmt->execute();
-        header( 'Location: adminUsers.php?user_id='.$_GET['user_id']);
+        header( 'Location: adminItems.php?user_id='.$_GET['user_id']);
         return;
     }
 
-    $customer_id = $_GET['customer_id'];
-    $sql = "SELECT name, customer_ID FROM Customers WHERE customer_ID = $customer_id";
+    $item_id = $_GET['item_id'];
+    $sql = "SELECT name, item_ID, image FROM Items WHERE item_ID = $item_id";
     $result = $conn->query($sql);
     $row = mysqli_fetch_assoc($result);
 
 
     //The form
     $n = htmlentities($row['name']);
-    $id = $row['customer_ID'];
+    $id = $row['item_ID'];
 
-    echo("<p>Delete User ".$id.": ".$n);
+    echo("<p>Delete Item ".$id.": ".$n."</p><br/>");
+    echo('
+        <img src='.htmlentities($row['image']).' style="width:300px;height:300px;">
+    ');
     ?>
-    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id'] . '&customer_id=' . $_GET['customer_id']);?>">
-    <input type="hidden" name="customer_id" value="<?=$id?>">
+    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id'] . '&item_id=' . $_GET['item_id']);?>">
+    <input type="hidden" name="item_id" value="<?=$id?>">
     <input type="submit" name="delete" value="Delete">
-    <a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a></p>
+    <a href="adminItems.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a></p>
     </form>
 
 
