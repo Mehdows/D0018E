@@ -91,7 +91,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$row[name].'</td>
                     <td>'.$row[price].'</td>
                     <td>'.$row[stock].'</td>
-                    <td><a href="editItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'">Edit Item</a></td>
+                    <td><a href="editItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'">Edit Item</a>/
+                        <a href="deleteItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'">Delete</a>
+                    </td>
                     </tr>
                 ');
             }

@@ -67,50 +67,33 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
 <?php
 
-    if ( isset($_POST['name']) && isset($_POST['pssword']) && isset($_POST['admin'])) {
+    if ( isset($_POST['delete']) && isset($_POST['customer_id']) ) {
+        $stmt = $conn->prepare("DELETE FROM Customers WHERE customer_ID = ?");
+        $id = $_POST['customer_id'];
 
-        if (empty($_POST['name']) || empty($_POST['pssword']) || empty($_POST['admin'])) {
-            echo("You may not leave fields empty");
-            echo "<br>";
-            goto exitIf;
-        }
-
-        $stmt = $conn->prepare("UPDATE Customers SET name = ?, pssword = ?, admin = ? WHERE customer_ID = $_GET[customer_id]");
-
-        $name = $_POST['name'];
-        $pssword = $_POST['pssword'];
-        $admin = $_POST['admin'];
-
-        $stmt->bind_param("ssi", $name, $pssword, $admin);
+        $stmt->bind_param("i", $id);
         $stmt->execute();
-
-        exitIf:
+        mysqli_commit($conn);
+        header( 'Location: adminUsers.php?user_id='.$_GET['user_id']);
+        return;
     }
 
-    $sql = "SELECT * FROM Customers WHERE customer_ID = $_GET[customer_id]";
+    $customer_id = $_GET['customer_id'];
+    $sql = "SELECT name, customer_ID FROM Customers WHERE customer_ID = $customer_id";
     $result = $conn->query($sql);
     $row = mysqli_fetch_assoc($result);
 
+
     //The form
     $n = htmlentities($row['name']);
-    $p = htmlentities($row['pssword']);
-    $a = htmlentities($row['admin']);
-    $id = $row['item_ID'];
+    $id = $row['customer_ID'];
 
+    echo("<p>Delete User ".$id.": ".$n);
     ?>
-    <p>Edit Customer</p>
-    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET[user_id] . '&customer_id=' . $_GET[customer_id]);?>">
-    <p>Name:
-    <input type="text" name="name" value="<?= $n ?>"></p>
-    <p>Password:
-    <input type="text" name="pssword" value="<?= $p ?>"></p>
-    <p>Admin:
-    <input type="radio" name="admin" <?php if ($a == 1) echo "checked";?> value="1">Yes
-    <input type="radio" name="admin" <?php if ($a == 0) echo "checked";?> value="0">No</p>
-    
-    <input type="hidden" name="item_ID" value="<?= $id ?>">
-    <p><input type="submit" value="Update"/>
-    <a href="adminUsers.php?user_id=<?php echo($_GET[user_id])?>">Cancel</a></p>
+    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id'] . '&customer_id=' . $_GET['customer_id']);?>">
+    <input type="hidden" name="customer_id" value="<?=$id?>">
+    <input type="submit" name="delete" value="Delete">
+    <a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a></p>
     </form>
 
 
