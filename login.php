@@ -75,26 +75,28 @@
 
 <?php
 require __DIR__ . '/functions.php';
-$con = startConnection();
+$conn = startConnection();
 session_start();
 // When form submitted, check and create user session.
 if (isset($_POST['name']) && isset($_POST['pssword'])) {
 	$name = stripslashes($_REQUEST['name']);    // removes backslashes
-	$name = mysqli_real_escape_string($con, $name);
+	$name = mysqli_real_escape_string($conn, $name);
 	$pssword = stripslashes($_REQUEST['pssword']);
-	$pssword = mysqli_real_escape_string($con, $pssword);
+	$pssword = mysqli_real_escape_string($conn, $pssword);
 	// Check user is exist in the database
 	$query    = "SELECT * FROM `Customers` WHERE name='$name'
 				AND pssword='$pssword'";
-	$result = mysqli_query($con, $query) or die(mysql_error());
+	$result = mysqli_query($conn, $query) or die(mysql_error());
 	$numrows = mysqli_num_rows($result);
 	$row = mysqli_fetch_assoc($result);
 	if ($numrows == 1) {
 		if ($row["admin"] == 1){
 			// Redirect to admin home page
+			mysqli_commit($conn);
 			header('Location: adminHome.php?user_id='.$row["customer_ID"]);
 		} else {
 			// Redirect to user dashboard page
+			mysqli_commit($conn);
 			header('Location: homePage.php?user_id='.$row["customer_ID"]);
 		}
 	} else {
@@ -147,6 +149,7 @@ if (isset($_POST['name']) && isset($_POST['pssword'])) {
 
 <?php
 }
+closeConnection($conn);
 ?>
 
 	</body>

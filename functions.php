@@ -14,12 +14,15 @@ function startConnection() {
     die("Connection failed: " . mysqli_connect_error());
   }
   //echo "Connected successfully";
+  mysqli_begin_transaction($conn);
+  mysqli_autocommit($conn, false);
   return $conn;
 }
 
 
 
 function closeConnection($conn) {
+  mysqli_commit($conn);
   $conn->close();
   //echo "Closed connection";
 }

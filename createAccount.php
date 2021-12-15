@@ -70,26 +70,26 @@ span.psw {
 
 <?php
     require __DIR__ . '/functions.php';
-    $con = startConnection();
+    $conn = startConnection();
     // When form submitted, insert values into the database.
     if (isset($_POST['name']) && isset($_POST['pssword'])){
         // removes backslashes
         $name = stripslashes($_POST['name']);
         //escapes special characters in a string
-        $name = mysqli_real_escape_string($con, $name);
+        $name = mysqli_real_escape_string($conn, $name);
         $pssword = stripslashes($_POST['pssword']);
-        $pssword = mysqli_real_escape_string($con, $pssword);
+        $pssword = mysqli_real_escape_string($conn, $pssword);
 
         //check for dublicate row
         $quer = "SELECT * FROM `Customers` WHERE name='$name'";
-        $dublicate = mysqli_query($con, $quer) or die(mysql_error());
-        $rows = mysqli_num_rows($dublicate);
+        $duplicate = mysqli_query($conn, $quer) or die(mysql_error());
+        $rows = mysqli_num_rows($duplicate);
 
         $result = false;
         if($rows == 0){
             $query    = "INSERT into `Customers` (name, pssword)
             VALUES ('$name', '$pssword' )";
-            $result   = mysqli_query($con, $query);
+            $result   = mysqli_query($conn, $query);
         }else{
             echo "<div class='form'>
             <h3>Name is already registered.</h3><br/>

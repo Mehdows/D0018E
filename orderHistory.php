@@ -23,6 +23,12 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <!-- END DEMO STYLING -->
 </head>
 <body>
+
+    <?php
+		require __DIR__ . '/functions.php';
+		$conn = startConnection();
+    ?>
+
     <style>
         table, th, td {
             border:1px solid black;
@@ -101,5 +107,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     </footer>
 </div>
 -->
+<?php
+    closeConnection($conn);
+?>
 </body>
 </html>

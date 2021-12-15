@@ -16,6 +16,7 @@
 <script src="scripts/ie/html5shiv.min.js"></script>
 <![endif]-->
 <!-- BEFORE USING THIS FRAMEWORK REMOVE THIS DEMO STYLING - ONLY USED TO EMPHASISE THE DIV CONTAINERS IN THE CONTENT AREA -->
+
 <style type="text/css">
 div.full_width{margin-top:20px;}
 div.full_width:first-child{margin-top:0;}
@@ -25,8 +26,8 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 </head>
 <body>
   <?php
-		require __DIR__ . '/functions.php';
-		$conn = startConnection();
+                require __DIR__ . '/functions.php';
+                $conn = startConnection();
   ?>
 <div class="wrapper row1">
   <header id="header" class="clear">
@@ -59,32 +60,63 @@ div.full_width div{color:#666666; background-color:#fffefe;}
   <?php
 
     $sql = "SELECT item_ID, name, price, image FROM Items";
-    $result = $conn->query($sql);
+    $result = mysqli_query($conn, $sql);
 
     echo('<table>');
       echo('<tr>');
       while ($row = mysqli_fetch_assoc($result)) {
         if((htmlentities($row['item_ID']))%3 == 1){ //only display 3 items per row
-          echo('</tr>');
-          echo('<tr>');
+      echo('</tr>');
+      echo('<tr>');
         }
         echo('<td>');
-        echo('<div class="imgContainer">');
-          echo('<div>');
-                    echo('<div>');
-              echo("<h2>".htmlentities($row['name']). " - " . htmlentities($row['price']). " kr/item</h2>");
-              echo('<a href="inspectItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
-            echo('</div>');
-                    echo('<div class="imgButton">');
-              echo('<a  class="button" href="">Buy</a>');
+          echo('<div class="imgContainer">');
+            echo('<div>');
+              echo('<div>');
+                echo("<h2>".htmlentities($row['name']). " - " . htmlentities($row['price']). " kr/item</h2>");
+                echo('<a href="inspectItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
+              echo('</div>');
+              echo("<input type='submit' name=" . htmlentities($row['item_ID']) . "
+              class='button' value='buy'>");
             echo('</div>');
           echo('</div>');
-        echo('</div>');
         echo('</td>');
       }
-      echo('</tr>');
-    echo('</table>');
+    echo('</tr>');
+  echo('</table>');
   ?>
+
+
+<?php
+$user_ID = $_GET['user_id'];
+$item_ID = $_POST['item_ID'];
+
+if(isset($item_ID)){
+  $query = "SELECT order_ID FROM Orders WHERE bought = 0";
+  $order_ID = mysqli_query($conn, $query);
+  $order_ID = mysqli_fetch_assoc($order_ID);
+
+  $query = "SELECT * FROM OrderItems WHERE order_ID = $order_ID AND item_ID = $item_ID";
+  $item = mysqli_query($conn, $query);
+  $row = mysqli_fetch_assoc($item);
+  if ($row != null){
+    $amount = $row['amount'] + 1;
+    $query = "UPDATE OrderItems SET amount = $amount WHERE order_ID = $order_ID AND item_ID = $item_ID";
+    $result = mysqli_query($conn, $query);
+  
+  }else{
+    $query = "INSERT INTO OrderItems VALUES ($order_ID, $item_ID, 1, NULL)";
+    $result = mysqli_query($conn, $query);
+  }
+
+}
+
+
+
+
+?>
+
+
 
 <?php
   closeConnection($conn);

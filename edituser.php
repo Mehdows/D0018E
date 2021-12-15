@@ -85,7 +85,8 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
         $stmt->bind_param("ssi", $name, $pssword, $admin);
         $stmt->execute();
-
+        
+        echo("Updated successfully");
         exitIf:
     }
 
