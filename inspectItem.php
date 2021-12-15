@@ -178,6 +178,7 @@ button.primaryContained:hover {
     </div>
 
 
+<!-- Comment box html -->
 <div class="panel panel-default">
 <div class="panel-heading">Submit Your Comments</div>
     <div class="panel-body">
@@ -189,18 +190,19 @@ button.primaryContained:hover {
 	<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
     </div>
-</div>
-
 <?php if(isset($smsg)){ ?><div class="alert alert-success" role="alert"> <?php echo $smsg; ?> </div><?php } ?>
 <?php if(isset($fmsg)){ ?><div class="alert alert-danger" role="alert"> <?php echo $fmsg; ?> </div><?php } ?>
+</div>
+
 
 <?php
+// Put comments into the database
 if(isset($_POST) & !empty($_POST)){
 	$comment = mysqli_real_escape_string($conn, $_POST['comment']);
     $item_id = $_GET['item_id'];
     $user_id = $_GET['user_id'];
 
-	$isql = "INSERT INTO 'Comments' (customer_ID, item_id, comment) VALUES ('$user_id', '$item_id', '$comment')";
+	$isql = "INSERT INTO Comments (customer_ID, item_id, comment) VALUES ('$user_id', '$item_id', '$comment')";
 	$ires = mysqli_query($conn, $isql) or die(mysqli_error($conn));
 	if($ires){
 		$smsg = "Your Comment Submitted Successfully";
@@ -210,13 +212,36 @@ if(isset($_POST) & !empty($_POST)){
 }
 ?>
 
+<!-- See Comments html -->
+<div class="panel panel-default">
+	<div class="panel-heading">Comments</div>
+	<table class="table table-striped"> 
+		<thead> 
+			<tr> 
+				<th>Name</th> 
+				<th>Comment</th> 
+			</tr> 
+		</thead> 
+		<tbody> 
 
+        <?php
+        // Take comments from database
+        $item_id = $_GET['item_id'];
+        $sql = "SELECT * FROM Comments WHERE item_ID ='$item_id'";
+        $res = mysqli_query($conn, $sql);
+        ?>
+        <?php
+	    while ( $r = mysqli_fetch_assoc($res)) {
+        ?>
+	    <tr> 
+		    <th scope="row"><?php echo $r['customer_ID']; ?></th> 
+		    <td><?php echo $r['comment']; ?></td> 
+	    </tr> 
+        <?php } ?> 
 
-
-
-
-
-
+		</tbody> 
+	</table>
+</div>
 
 
 
