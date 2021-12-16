@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang="en">
 
@@ -118,3 +119,20 @@
 </body>
 
 </html>
+=======
+<!DOCTYPE html>
+<html>
+	<body>
+		<h1>My first PHP page</h1>
+	</body>
+</html>
+
+<?php
+print_r($_GET);
+echo($_GET['user_id']);
+
+
+$value = '1234';
+echo "'1234' Is data type - ".gettype($value);
+?>
+>>>>>>> 5c6f79b0f80726223c6c61c3a0fcd802bb3b01ed

@@ -76,7 +76,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
                 echo("<h2>".htmlentities($row['name']). " - " . htmlentities($row['price']). " kr/item</h2>");
                 echo('<a href="inspectItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
               echo('</div>');
-              echo("<input type='submit' name=" . htmlentities($row['item_ID']) . "
+              echo("<input type='button' name=" . htmlentities($row['item_ID']) . "
               class='button' value='buy'>");
             echo('</div>');
           echo('</div>');

@@ -72,9 +72,15 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         $id = $_POST['customer_id'];
 
         $stmt->bind_param("i", $id);
-        $stmt->execute();
-        mysqli_commit($conn);
-        header( 'Location: adminUsers.php?user_id='.$_GET['user_id']);
+        $stmt->bind_param("i", $id);
+        if ($stmt->execute()){
+            echo("Deleted successfully");
+            mysqli_commit($conn);
+            header( 'Location: adminUsers.php?user_id='.$_GET['user_id']);
+        } else {
+            echo("Could not delete, please try again");
+        }
+
         return;
     }
 

@@ -73,6 +73,7 @@ span.psw {
     $conn = startConnection();
     // When form submitted, insert values into the database.
     if (isset($_POST['name']) && isset($_POST['pssword'])){
+        
         // removes backslashes
         $name = stripslashes($_POST['name']);
         //escapes special characters in a string
@@ -81,13 +82,13 @@ span.psw {
         $pssword = mysqli_real_escape_string($conn, $pssword);
 
         //check for dublicate row
-        $quer = "SELECT * FROM `Customers` WHERE name='$name'";
+        $quer = "SELECT * FROM Customers WHERE name='$name'";
         $duplicate = mysqli_query($conn, $quer) or die(mysql_error());
         $rows = mysqli_num_rows($duplicate);
 
         $result = false;
         if($rows == 0){
-            $query    = "INSERT into `Customers` (name, pssword)
+            $query    = "INSERT into Customers (name, pssword)
             VALUES ('$name', '$pssword' )";
             $result   = mysqli_query($conn, $query);
         }else{
@@ -138,7 +139,7 @@ span.psw {
 <?php
         
     }
-    closeConnection($con);
+    closeConnection($conn);
 ?>
 
 </body>
