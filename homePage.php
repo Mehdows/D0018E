@@ -59,7 +59,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 
   <?php
 
-    $sql = "SELECT item_ID, name, price, image FROM Items";
+    $sql = "SELECT item_ID, name, price, image FROM Items WHERE active = '1'";
     $result = mysqli_query($conn, $sql);
 
     echo('<table>');

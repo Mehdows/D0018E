@@ -65,12 +65,15 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div id="container">
 
 <!-- ################################################################################################ -->
+    <?php
+        echo('<a  class="button" href="addItem.php?user_id='.$_GET[user_id].'">Add new item</a>');
+    ?>
 
     <div class="full_width clear">
-    <h2>Item List</h2>
+    <h2>Active Item List</h2>
 
     <?php
-        $sql = "SELECT item_ID, name, stock, price FROM Items";
+        $sql = "SELECT item_ID, name, stock, price, active FROM Items WHERE active = '1'";
         $result = $conn->query($sql);
     ?>
 
@@ -80,7 +83,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
             <th>Name</th>
             <th>Price</th>
             <th>Stock</th>
-            <th>Edit</th>
+            <th>Edit/Inactivate</th>
         </tr>
 
         <?php
@@ -92,7 +95,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$row[price].'</td>
                     <td>'.$row[stock].'</td>
                     <td><a href="editItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'">Edit Item</a>/
-                        <a href="deleteItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'">Delete</a>
+                    <a href="statusItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'&status='.$row['active'].'">Inactivate</a>
                     </td>
                     </tr>
                 ');
@@ -102,10 +105,42 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         
     </table>
 
-<?php
-    echo "<br>";
-    echo('<a  class="button" href="addItem.php?user_id='.$_GET[user_id].'">Add new item</a>');
-    closeConnection($conn);
-?>
+    <?php
+        echo "<br>";
+        
+
+        $sql2 = "SELECT item_ID, name, stock, price, active FROM Items WHERE active = '0'";
+        $result2 = $conn->query($sql2);
+    ?>
+
+    <h2>Inactive Item List</h2>
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Edit/Activate</th>
+        </tr>
+
+        <?php
+            while ($row2 = mysqli_fetch_assoc($result2)) {
+                echo('
+                    <tr>
+                    <td>'.$row2[item_ID].'</td>
+                    <td>'.$row2[name].'</td>
+                    <td>'.$row2[price].'</td>
+                    <td>'.$row2[stock].'</td>
+                    <td><a href="editItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'">Edit Item</a>/
+                    <a href="statusItem.php?user_id='.$_GET['user_id'].'&item_id='.$row2['item_ID'].'&status='.$row2['active'].'">Activate</a>
+                    </td>
+                    </tr>
+                ');
+            }
+            
+            closeConnection($conn);
+        ?>
+        
+    </table>
 </body>
 </html>

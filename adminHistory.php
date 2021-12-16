@@ -66,6 +66,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <!-- ################################################################################################ -->
 
     <div class="full_width clear">
+
+    <a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a>
+
     <h2>Shopping Cart</h2>
 
     <?php

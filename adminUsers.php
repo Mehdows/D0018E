@@ -66,10 +66,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <!-- ################################################################################################ -->
 
     <div class="full_width clear">
-    <h2>Item List</h2>
+    <h2>Active Customer List</h2>
 
     <?php
-        $sql = "SELECT customer_ID, name, pssword, admin FROM Customers";
+        $sql = "SELECT customer_ID, name, pssword, admin, active FROM Customers WHERE active = '1'";
         $result = $conn->query($sql);
     ?>
 
@@ -80,7 +80,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
             <th>Password</th>
             <th>Admin</th>
             <th>View Cart/History</th>
-            <th>Edit/Delete</th>
+            <th>Edit</th>
         </tr>
 
         <?php
@@ -98,7 +98,50 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$adminTemp.'</td>
                     <td><a href="adminHistory.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
                     <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a>/
-                        <a href="deleteUser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Delete</a>
+                    <a href="statusUser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'&status='.$row['active'].'">Inactivate</a>
+                    </td>
+                    </tr>
+                ');
+            }
+            
+        ?>
+        
+    </table>
+
+
+    <h2>Inactive Customer List</h2>
+
+    <?php
+        $sql = "SELECT customer_ID, name, pssword, admin, active FROM Customers WHERE active = '0'";
+        $result = $conn->query($sql);
+    ?>
+
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Admin</th>
+            <th>View Cart/History</th>
+            <th>Edit</th>
+        </tr>
+
+        <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+                if ($row[admin] == 0) {
+                    $adminTemp = "No";
+                } else {
+                    $adminTemp = "Yes";
+                }
+                echo('
+                    <tr>
+                    <td>'.$row[customer_ID].'</td>
+                    <td>'.$row[name].'</td>
+                    <td>'.$row[pssword].'</td>
+                    <td>'.$adminTemp.'</td>
+                    <td><a href="adminHistory.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
+                    <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a>/
+                    <a href="statusUser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'&status='.$row['active'].'">Activate</a>
                     </td>
                     </tr>
                 ');
