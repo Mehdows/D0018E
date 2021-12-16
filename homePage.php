@@ -77,8 +77,8 @@ div.full_width div{color:#666666; background-color:#fffefe;}
                 echo('<a href="inspectItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
               echo('</div>');
               echo('<form method="post">');
-                echo('<button type="hidden" name="item_ID" value="<?='.$row['item_ID'].'?>" />');
-              echo('<input type="submit" name="Buy" value="Buy">');
+              echo('<input type="hidden" name="item_ID" value="'.$row['item_ID'].'" />');
+              echo('<input type="submit" name="buy" value="Buy">');
               echo('</form>');
               echo('</div>');
           echo('</div>');
@@ -94,6 +94,7 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 $user_ID = $_GET['user_id'];
 $item_ID = $_POST['item_ID'];
 
+
 $query = "SELECT * FROM Orders WHERE customer_ID = '$user_ID' AND bought = 0";
 $res = mysqli_query($conn, $query) ;
 if ($res == false){
@@ -102,7 +103,7 @@ if ($res == false){
   $return = mysqli_query($conn, $query) ;
 }
 
-if(isset($item_ID)){
+if(isset($_POST['buy'])){
   echo($item_ID);
   $order_ID = mysqli_query($conn, $query);
   $order_ID = mysqli_fetch_assoc($order_ID);
@@ -110,9 +111,10 @@ if(isset($item_ID)){
 
   $query = "SELECT * FROM OrderItems WHERE order_ID = $order_ID AND item_ID = $item_ID";
   $item = mysqli_query($conn, $query);
-  
-  if ($item){
-    $row = mysqli_fetch_assoc($item);
+  $row = mysqli_fetch_assoc($item);
+
+  if ($row){
+    
     $amount = $row['amount'] + 1;
     
     $query = "UPDATE OrderItems SET amount = $amount WHERE order_ID = $order_ID AND item_ID = $item_ID";
@@ -120,10 +122,12 @@ if(isset($item_ID)){
   
   }else{
     
-    $query = "INSERT INTO OrderItems VALUES ($order_ID, $item_ID, 1, NULL)";
+    $query = "INSERT INTO OrderItems (order_ID, item_ID, amount) VALUES ($order_ID, $item_ID, 1)";
     $result = mysqli_query($conn, $query);
     
   }
+
+  unset($_POST['buy']);
 
 }
 
