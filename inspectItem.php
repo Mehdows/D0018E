@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-<>
+<html lang="en" dir="ltr">git 
 <title>RS-MQF 1200 V.2</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +40,7 @@
 
 <style type="text/css">
 
-div.full_width{margin-top:20px;}
+div.full_width{margin-top:10px;}
 div.full_width:first-child{margin-top:0;}
 div.full_width div{color:#666666; background-color:#DEDEDE;}
 
@@ -50,7 +49,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 	margin: 30px auto;
 	background: #fff;
 	border-radius: 8px;
-	padding: 20px;
+	padding: 5px;
 }
 
 .comment {
@@ -190,6 +189,9 @@ button.primaryContained:hover {
     </div>
 
 
+<!-- #############################  Grading     ############################################### -->
+
+
 <!-- HTML for the grading system -->
 <body>
 <h3><b>Rating</b></h3>
@@ -213,13 +215,11 @@ button.primaryContained:hover {
     $itemId = $_GET['item_id'];
     $customer_ID = $_GET['user_id'];
 
-
         if(isset($_POST['Rate'])){
             if(!empty($_POST['Rating'])) {
             $selected = $_POST['Rating'];
 
             // Check rating inside the table
-            
             $itemId = $_GET['item_id'];
             $customer_ID = $_GET['user_id'];
             
@@ -250,10 +250,6 @@ button.primaryContained:hover {
 
 </html>
 
-
-
-
-
 <?php
     // avg function
     $query = mysqli_query($conn,"SELECT AVG(Grade) as AVGGrade from Grading where item_id = $item_id");
@@ -276,7 +272,7 @@ button.primaryContained:hover {
 </div>
 
 
-
+<!-- #################################  Comment  ##################################################### -->
 
 <!-- Comment box html -->
 <div class="panel panel-default">
