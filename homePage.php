@@ -92,19 +92,21 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 <?php
 
 $user_ID = $_GET['user_id'];
-$item_ID = $_POST['item_ID'];
+
 
 
 $query = "SELECT * FROM Orders WHERE customer_ID = '$user_ID' AND bought = 0";
-$res = mysqli_query($conn, $query) ;
-if ($res == false){
-  $query = "INSERT INTO Orders (customer_ID) 
-  VALUES ('$user_ID')";
+$res = mysqli_query($conn, $query);
+$rows = mysqli_num_rows($res);
+if ($rows == 0){
+  echo("\n$user_ID\n");
+  $query = "INSERT INTO Orders (customer_ID) VALUES ($user_ID)";
   $return = mysqli_query($conn, $query) ;
 }
 
+
 if(isset($_POST['buy'])){
-  echo($item_ID);
+  $item_ID = $_POST['item_ID'];
   $order_ID = mysqli_query($conn, $query);
   $order_ID = mysqli_fetch_assoc($order_ID);
   $order_ID = $order_ID['order_ID'];

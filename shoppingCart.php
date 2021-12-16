@@ -103,12 +103,12 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <?php
         echo('<h3>Total Cost: '.$costTot. ' kr</h3>');
     ?>
-    <form class="form" method="post" name="adress">
+    <form class="form" method="post" name="address">
         <div class="container">
-            <label for="adress"><b>adress</b></label>
+            <label for="address"><b>address</b></label>
             <input type="text" 
-            placeholder="Enter Adress" 
-            name="adress" 
+            placeholder="Enter Address" 
+            name="address" 
             required 
         />
     </form>
@@ -118,43 +118,51 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
     <?php
         
-        if(isset($_POST['adress'])) {
-
-            $user_ID = $_GET['user_id'];
+        if(isset($_POST['address'])) {
             
-            //CHECK IF STOCK WILL BE NEGATIVE AFTER PURCHASE
+            $user_ID = $_GET['user_id'];
+
             $order = "SELECT order_ID FROM `Orders` WHERE customer_ID='$user_ID' AND bought=0";
             $order_query = mysqli_query($conn, $order) ;
             $order_ID = mysqli_fetch_assoc($order_query);
-            
+            $order_ID = $order_ID['order_ID'];
+
             $orderList = "SELECT * FROM `OrderItems` WHERE order_ID = '$order_ID'";
             $orderList = mysqli_query($conn, $orderList) ;
             
-            $adress = $_POST['adress'];    
+            $address = $_POST['address'];    
             $today = date("Y/m/d");
 
+            $query = "UPDATE Orders SET purchase_Date = '$today', adress = '$address', bought = 1 WHERE order_ID = '$order_ID'";
+            $query = mysqli_query($conn, $query);
+            
             while($row = mysqli_fetch_assoc($orderList)){
                 $item_ID = $row['item_ID'];
                 $amount = $row['amount'];
-                $query = "SELECT stock FROM `items` WHERE item_ID = '$item_ID'";
-                $stock = mysqli_query($conn, $query) ;
+                $query = "SELECT stock, price FROM `Items` WHERE item_ID = '$item_ID'";
+                $itemInfo = mysqli_query($conn, $query) ;
+                $itemInfo = mysqli_fetch_assoc($itemInfo);
+                $stock = $itemInfo['stock'];
                 if($stock < $amount){
+                    echo("Not enough stock");
                     mysqli_rollback($conn);
                     break;
                 }
-                $currentPrice = $Row['price'];
-                $newStock = $Row['stock'] - $amount;
+                $currentPrice = $itemInfo['price'];
+                $newStock = $stock - $amount;
+                
                 
                 //Updates to the new
-                $query = "UPDATE `items` SET stock = '$newStock' WHERE item_ID = '$item_ID'";
+                $query = "UPDATE `Items` SET stock = '$newStock' WHERE item_ID = '$item_ID'";
                 $update = mysqli_query($conn, $query) ;
-                    
+                  
                 //Set the current price in history
-                $query = "UPDATE `OrderList` SET price='$currentPrice' WHERE item_ID='$item_ID'";
+                $query = "UPDATE `OrderItems` SET price='$currentPrice' WHERE item_ID='$item_ID' AND order_ID='$order_ID'";
                 $update = mysqli_query($conn, $query) ;
                     
 
             }
+            unset($_POST['address']);
         }
         
     ?>
