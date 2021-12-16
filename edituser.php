@@ -84,9 +84,12 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         $admin = $_POST['admin'];
 
         $stmt->bind_param("ssi", $name, $pssword, $admin);
-        $stmt->execute();
+        if ($stmt->execute()){
+            echo("Updated successfully");
+        } else {
+            echo("Could not update, please try again");
+        }
         
-        echo("Updated successfully");
         exitIf:
     }
 

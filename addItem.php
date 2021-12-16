@@ -69,10 +69,25 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 
     if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
         && isset($_POST['price']) && isset($_POST['stock'])) {
-
+        
+        //check for empty fields
         if (empty($_POST['name']) || empty($_POST['image']) || empty($_POST['info'])
             || empty($_POST['price']) || empty($_POST['stock'])) {
-            echo("You may not leave fields empty");
+            echo("You may not leave fields empty or 0");
+            echo "<br>";
+            goto exitIf;
+        }
+
+        //check for numbers
+        if (is_numeric($_POST['stock']) == 0 || is_numeric($_POST['price']) == 0) {
+            echo("Stock and price must be numbers");
+            echo "<br>";
+            goto exitIf;
+        }
+
+        //check for negative numbers
+        if ($_POST['stock'] < 0 || $_POST['price'] < 0) {
+            echo("You may not have negative numbers");
             echo "<br>";
             goto exitIf;
         }
@@ -86,7 +101,11 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         $image = $_POST['image'];
 
         $stmt->bind_param("siiss", $name, $stock, $price, $info, $image);
-        $stmt->execute();
+        if ($stmt->execute()){
+            echo("Added item successfully");
+        } else {
+            echo("Could not add item, please try again");
+        }
 
         exitIf:
     }
