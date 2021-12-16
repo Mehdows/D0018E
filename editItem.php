@@ -80,6 +80,13 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
             goto exitIf;
         }
 
+        //check for numbers
+        if (is_numeric($_POST['stock']) == 0 || is_numeric($_POST['price']) == 0) {
+            echo("Stock and price must be numbers");
+            echo "<br>";
+            goto exitIf;
+        }
+
         //check for negative numbers
         if ($_POST['stock'] < 0 || $_POST['price'] < 0) {
             echo("You may not have negative numbers");
