@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
+<>
 <title>RS-MQF 1200 V.2</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,8 +13,20 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 
+<!-- stars -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
+	<link rel='stylesheet' href='https://raw.githubusercontent.com/kartik-v/bootstrap-star-rating/master/css/star-rating.min.css'>
+
 <script src="scripts/jquery.1.9.0.min.js"></script>
 <script src="scripts/jquery-mobilemenu.min.js"></script>
+
+<!-- stars -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/index.js"></script>
+
 
 
 
@@ -178,6 +190,94 @@ button.primaryContained:hover {
     </div>
 
 
+<!-- HTML for the grading system -->
+<body>
+<h3><b>Rating</b></h3>
+<div class="container mt-5">
+    <form action="" method="post" class="mb-3">
+    <div class="select-block">
+        <select name="Rating">
+            <option value="" disabled selected>Choose option</option>
+            <option value="1">One star</option>
+            <option value="2">Two stars</option>
+            <option value="3">Three stars</option>
+            <option value="4">Four stars</option>
+            <option value="5">Five stars</option>
+        </select>
+    </div>
+    <input type="submit" name="Rate" vlaue="Choose options">
+    </form>
+
+    <?php
+    //PHP for the grading system
+    $itemId = $_GET['item_id'];
+    $customer_ID = $_GET['user_id'];
+
+
+        if(isset($_POST['Rate'])){
+            if(!empty($_POST['Rating'])) {
+            $selected = $_POST['Rating'];
+
+            // Check rating inside the table
+            
+            $itemId = $_GET['item_id'];
+            $customer_ID = $_GET['user_id'];
+            
+            $query = "SELECT COUNT(*) AS countProduct FROM Grading WHERE item_id = " . $itemId . " and customer_id = " . $customer_ID;
+            
+            $result = mysqli_query($conn, $query);
+            $getdata = mysqli_fetch_array($result);
+            $count = $getdata['countProduct'];
+            
+            if($count == 0){
+                $insertquery = "INSERT INTO Grading (customer_id, item_id, Grade) VALUES (". $customer_ID .", ". $itemId .", ". $selected .")";
+                mysqli_query($conn, $insertquery);
+            }else {
+                $updateRating = "UPDATE Grading SET Grade=" . $selected . " where customer_id=" . $customer_ID . " and item_id=" . $itemId;
+                mysqli_query($conn, $updateRating);
+            }
+            
+            echo 'You have chosen: ' . $selected;
+        } else {
+
+            echo 'Please select the value.';
+        }
+        }
+    ?>
+</div>
+
+</body>
+
+</html>
+
+
+
+
+
+<?php
+    // avg function
+    $query = mysqli_query($conn,"SELECT AVG(Grade) as AVGGrade from Grading where item_id = $item_id");
+    $row = mysqli_fetch_array($query);
+    $AVGGrade=$row['AVGGrade'];
+
+    if($AVGGrade <= 0){
+        $AVGGrade = 0;
+    }
+?>
+
+
+<!-- avg star html -->
+	<div class="row">
+	
+		<div class="col-md-6">
+			<h3 align="center"><b><?php echo round($AVGGrade,1);?></b> <i class="fa fa-star" data-rating="2" style="font-size:20px;color:#ff9f00;"></i></h3>
+        </div>
+    </div>
+</div>
+
+
+
+
 <!-- Comment box html -->
 <div class="panel panel-default">
 <div class="panel-heading">Submit Your Comments</div>
@@ -187,7 +287,7 @@ button.primaryContained:hover {
 	        <label for="exampleInputPassword1">Subject</label>
 	        <textarea name="comment" class="form-control" rows="3"></textarea>
 	    </div>
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" name="text" class="btn btn-primary">Submit</button>
 	</form>
     </div>
 <?php if(isset($smsg)){ ?><div class="alert alert-success" role="alert"> <?php echo $smsg; ?> </div><?php } ?>
@@ -197,8 +297,9 @@ button.primaryContained:hover {
 
 <?php
 // Put comments into the database
-if(isset($_POST) & !empty($_POST)){
-	$comment = mysqli_real_escape_string($conn, $_POST['comment']);
+if(isset($_POST['text']) & !empty($_POST['comment'])){
+    echo('test test');
+    $comment = mysqli_real_escape_string($conn, $_POST['comment']);
     $item_id = $_GET['item_id'];
     $user_id = $_GET['user_id'];
 
@@ -227,14 +328,17 @@ if(isset($_POST) & !empty($_POST)){
         <?php
         // Take comments from database
         $item_id = $_GET['item_id'];
-        $sql = "SELECT * FROM Comments WHERE item_ID ='$item_id'";
+        $sql = "SELECT name, comment FROM Comments 
+                JOIN Customers ON Comments.customer_ID = Customers.customer_ID
+                WHERE item_ID ='$item_id'";
+                
         $res = mysqli_query($conn, $sql);
         ?>
         <?php
 	    while ( $r = mysqli_fetch_assoc($res)) {
         ?>
 	    <tr> 
-		    <th scope="row"><?php echo $r['customer_ID']; ?></th> 
+		    <th scope="row"><?php echo $r['name']; ?></th> 
 		    <td><?php echo $r['comment']; ?></td> 
 	    </tr> 
         <?php } ?> 
@@ -242,13 +346,6 @@ if(isset($_POST) & !empty($_POST)){
 		</tbody> 
 	</table>
 </div>
-
-
-
-
-
-
-
 
 
     <!--
