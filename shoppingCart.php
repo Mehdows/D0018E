@@ -121,15 +121,6 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         if(isset($_POST['adress'])) {
 
             $user_ID = $_GET['user_id'];
-            //CHECK IF USER HAS cart
-            
-            $query = "SELECT * FROM Orders WHERE customer_ID = '$user_ID' AND bought = 0";
-            $res = mysqli_query($conn, $query) ;
-            if ($res == false){
-                $query = "INSERT INTO Orders
-                        VALUES ('$user_ID', null, null, 0)";
-                $return = mysqli_query($conn, $query) ;
-            }
             
             //CHECK IF STOCK WILL BE NEGATIVE AFTER PURCHASE
             $order = "SELECT order_ID FROM `Orders` WHERE customer_ID='$user_ID' AND bought=0";
@@ -139,51 +130,30 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
             $orderList = "SELECT * FROM `OrderItems` WHERE order_ID = '$order_ID'";
             $orderList = mysqli_query($conn, $orderList) ;
             
-            $stockIsEnough = TRUE;
+            $adress = $_POST['adress'];    
+            $today = date("Y/m/d");
+
             while($row = mysqli_fetch_assoc($orderList)){
                 $item_ID = $row['item_ID'];
                 $amount = $row['amount'];
                 $query = "SELECT stock FROM `items` WHERE item_ID = '$item_ID'";
                 $stock = mysqli_query($conn, $query) ;
                 if($stock < $amount){
-                    $stockIsEnough = false;
+                    mysqli_rollback($conn);
+                    break;
                 }
-
-            }
-
-            //Change to bought in database
-            if($stockIsEnough){
-                $adress = $_POST['adress'];    
-                $today = date("Y/m/d");
-                $buyOrderQuery = "UPDATE `Orders` 
-                SET bought=1, purchase_Date='', adress='$adress' 
-                WHERE order_ID='$order_ID'";
-
-                $buyOrder = mysqli_query($conn, $buyOrderQuery) ;
-
-                $orderList = "SELECT * FROM `OrderItems` WHERE order_ID = '$order_ID'";
-                $orderList = mysqli_query($conn, $orderList) ;
-               
-                while($row = mysqli_fetch_assoc($orderList)) {
-                    //remove from stock
-                    $item_ID = $row['item_ID'];
-                    $amount = $row['amount'];
-                    $query = "SELECT stock, price FROM `items` WHERE item_ID = '$item_ID'";
-                    $itemRow = mysqli_query($conn, $query) ;
-                    $currentPrice = $itemRow['price'];
-                    $newStock = $itemRow['stock'] - $amount;
-                    $query = "UPDATE `items` SET stock = '$newStock' WHERE item_ID = '$item_ID'";
-                    $update = mysqli_query($conn, $query) ;
+                $currentPrice = $Row['price'];
+                $newStock = $Row['stock'] - $amount;
+                
+                //Updates to the new
+                $query = "UPDATE `items` SET stock = '$newStock' WHERE item_ID = '$item_ID'";
+                $update = mysqli_query($conn, $query) ;
                     
-                    //Set the current price in history
-                    $query = "UPDATE `OrderList` SET price='$currentPrice' WHERE item_ID='$item_ID'";
-                    $update = mysqli_query($conn, $query) ;
+                //Set the current price in history
+                $query = "UPDATE `OrderList` SET price='$currentPrice' WHERE item_ID='$item_ID'";
+                $update = mysqli_query($conn, $query) ;
                     
 
-                }
-            }
-            else{
-                //print error
             }
         }
         
