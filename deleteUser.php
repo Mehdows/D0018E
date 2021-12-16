@@ -80,7 +80,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         } else {
             echo("Could not delete, please try again");
         }
-
+        echo("test");
         return;
     }
 

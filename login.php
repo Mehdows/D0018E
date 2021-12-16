@@ -85,7 +85,7 @@ if (isset($_POST['name']) && isset($_POST['pssword'])) {
 	$pssword = mysqli_real_escape_string($conn, $pssword);
 	// Check user is exist in the database
 	$query    = "SELECT * FROM `Customers` WHERE name='$name'
-				AND pssword='$pssword'";
+				AND pssword='$pssword' AND active = '1'";
 	$result = mysqli_query($conn, $query) or die(mysql_error());
 	$numrows = mysqli_num_rows($result);
 	$row = mysqli_fetch_assoc($result);
