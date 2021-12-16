@@ -73,6 +73,7 @@ span.psw {
     $conn = startConnection();
     // When form submitted, insert values into the database.
     if (isset($_POST['name']) && isset($_POST['pssword'])){
+        
         // removes backslashes
         $name = stripslashes($_POST['name']);
         //escapes special characters in a string
@@ -138,7 +139,7 @@ span.psw {
 <?php
         
     }
-    closeConnection($con);
+    closeConnection($conn);
 ?>
 
 </body>
