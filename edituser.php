@@ -77,11 +77,25 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
             goto exitIf;
         }
 
-        $stmt = $conn->prepare("UPDATE Customers SET name = ?, pssword = ?, admin = ? WHERE customer_ID = $customer_id");
-
         $name = $_POST['name'];
         $pssword = $_POST['pssword'];
         $admin = $_POST['admin'];
+
+        
+        $quer = "SELECT * FROM Customers WHERE name='$name'";
+        $duplicate = $conn->query($quer);
+        $numrows = mysqli_num_rows($duplicate);
+        if ($numrows == 1){
+            $row = mysqli_fetch_assoc($duplicate);
+            if ($row['customer_ID'] != $customer_id){
+                echo("That username is already in use, please choose another one");
+                echo "<br>";
+                goto exitIf;
+            }
+        }
+        
+    
+        $stmt = $conn->prepare("UPDATE Customers SET name = ?, pssword = ?, admin = ? WHERE customer_ID = $customer_id");
 
         $stmt->bind_param("ssi", $name, $pssword, $admin);
         if ($stmt->execute()){
@@ -101,7 +115,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     $n = htmlentities($row['name']);
     $p = htmlentities($row['pssword']);
     $a = htmlentities($row['admin']);
-    $id = $row['item_ID'];
+    $id = $row['customer_ID'];
 
     ?>
     <p>Edit Customer</p>
@@ -114,7 +128,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <input type="radio" name="admin" <?php if ($a == 1) echo "checked";?> value="1">Yes
     <input type="radio" name="admin" <?php if ($a == 0) echo "checked";?> value="0">No</p>
     
-    <input type="hidden" name="item_ID" value="<?= $id ?>">
+    <input type="hidden" name="customer_ID" value="<?= $id ?>">
     <p><input type="submit" value="Update"/>
     <a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a></p>
     </form>
