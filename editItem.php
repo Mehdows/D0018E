@@ -72,9 +72,24 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     if ( isset($_POST['name']) && isset($_POST['image']) && isset($_POST['info'])
     && isset($_POST['price']) && isset($_POST['stock'])) {
 
+        //check for empty fields
         if (empty($_POST['name']) || empty($_POST['image']) || empty($_POST['info'])
             || empty($_POST['price'])) {
             echo("You may not leave fields empty");
+            echo "<br>";
+            goto exitIf;
+        }
+
+        //check for numbers
+        if (is_numeric($_POST['stock']) == 0 || is_numeric($_POST['price']) == 0) {
+            echo("Stock and price must be numbers");
+            echo "<br>";
+            goto exitIf;
+        }
+
+        //check for negative numbers
+        if ($_POST['stock'] < 0 || $_POST['price'] < 0) {
+            echo("You may not have negative numbers");
             echo "<br>";
             goto exitIf;
         }
@@ -88,9 +103,13 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
         $image = $_POST['image'];
 
         $stmt->bind_param("siiss", $name, $stock, $price, $info, $image);
-        $stmt->execute();
-        
-        echo("Updated successfully");
+        if ($stmt->execute()){
+            echo("Updated successfully");
+        } else {
+            echo("Could not update, please try again");
+        }
+        echo("<div></div>");
+
         exitIf:
     }
 

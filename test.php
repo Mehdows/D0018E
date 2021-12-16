@@ -8,4 +8,8 @@
 <?php
 print_r($_GET);
 echo($_GET['user_id']);
+
+
+$value = '1234';
+echo "'1234' Is data type - ".gettype($value);
 ?>
