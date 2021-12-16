@@ -76,9 +76,11 @@ div.full_width div{color:#666666; background-color:#fffefe;}
                 echo("<h2>".htmlentities($row['name']). " - " . htmlentities($row['price']). " kr/item</h2>");
                 echo('<a href="inspectItem.php?user_id='.$_GET['user_id'].'&item_id='.$row['item_ID'].'" ><img src='.htmlentities($row['image']).' style="width:300px;height:300px;"></a>');
               echo('</div>');
-              echo("<input type='button' name=" . htmlentities($row['item_ID']) . "
-              class='button' value='buy'>");
-            echo('</div>');
+              echo('<form method="post">');
+                echo('<button type="hidden" name="item_ID" value="<?='.$row['item_ID'].'?>" />');
+              echo('<input type="submit" name="Buy" value="Buy">');
+              echo('</form>');
+              echo('</div>');
           echo('</div>');
         echo('</td>');
       }
@@ -88,25 +90,39 @@ div.full_width div{color:#666666; background-color:#fffefe;}
 
 
 <?php
+
 $user_ID = $_GET['user_id'];
 $item_ID = $_POST['item_ID'];
 
+$query = "SELECT * FROM Orders WHERE customer_ID = '$user_ID' AND bought = 0";
+$res = mysqli_query($conn, $query) ;
+if ($res == false){
+  $query = "INSERT INTO Orders (customer_ID) 
+  VALUES ('$user_ID')";
+  $return = mysqli_query($conn, $query) ;
+}
+
 if(isset($item_ID)){
-  $query = "SELECT order_ID FROM Orders WHERE bought = 0";
+  echo($item_ID);
   $order_ID = mysqli_query($conn, $query);
   $order_ID = mysqli_fetch_assoc($order_ID);
+  $order_ID = $order_ID['order_ID'];
 
   $query = "SELECT * FROM OrderItems WHERE order_ID = $order_ID AND item_ID = $item_ID";
   $item = mysqli_query($conn, $query);
-  $row = mysqli_fetch_assoc($item);
-  if ($row != null){
+  
+  if ($item){
+    $row = mysqli_fetch_assoc($item);
     $amount = $row['amount'] + 1;
+    
     $query = "UPDATE OrderItems SET amount = $amount WHERE order_ID = $order_ID AND item_ID = $item_ID";
     $result = mysqli_query($conn, $query);
   
   }else{
+    
     $query = "INSERT INTO OrderItems VALUES ($order_ID, $item_ID, 1, NULL)";
     $result = mysqli_query($conn, $query);
+    
   }
 
 }
