@@ -69,7 +69,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <h2>Active Customer List</h2>
 
     <?php
-        $sql = "SELECT customer_ID, name, pssword, admin FROM Customers WHERE active = '1'";
+        $sql = "SELECT customer_ID, name, pssword, admin, active FROM Customers WHERE active = '1'";
         $result = $conn->query($sql);
     ?>
 
@@ -97,7 +97,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$row[pssword].'</td>
                     <td>'.$adminTemp.'</td>
                     <td><a href="adminHistory.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
-                    <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a></td>
+                    <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a>/
+                    <a href="statusUser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'&status='.$row['active'].'">Inactivate</a>
+                    </td>
                     </tr>
                 ');
             }
@@ -110,7 +112,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <h2>Inactive Customer List</h2>
 
     <?php
-        $sql = "SELECT customer_ID, name, pssword, admin FROM Customers WHERE active = '0'";
+        $sql = "SELECT customer_ID, name, pssword, admin, active FROM Customers WHERE active = '0'";
         $result = $conn->query($sql);
     ?>
 
@@ -138,7 +140,9 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                     <td>'.$row[pssword].'</td>
                     <td>'.$adminTemp.'</td>
                     <td><a href="adminHistory.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">View Cart/History</a></td>
-                    <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a></td>
+                    <td><a href="edituser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'">Edit</a>/
+                    <a href="statusUser.php?user_id='.$_GET['user_id'].'&customer_id='.$row['customer_ID'].'&status='.$row['active'].'">Activate</a>
+                    </td>
                     </tr>
                 ');
             }

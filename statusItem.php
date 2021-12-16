@@ -78,7 +78,7 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
             try {
                 $id = $_POST['item_id'];
 
-                //Set the item to inactive
+                //Set the item to inactive/active
                 $stmt1 = $conn->prepare("UPDATE Items SET active = $statusNew WHERE item_ID = ?");
                 $stmt1->bind_param("i", $id);
                 $stmt1->execute();

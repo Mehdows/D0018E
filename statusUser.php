@@ -66,21 +66,47 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div id="container">
 
 <?php
+    if ($_GET['status'] == 0){
+        $statusName = 'Active';
+        $statusNew = '1';
+    } else if ($_GET['status'] == 1){
+        $statusName = 'Inactive';
+        $statusNew = '0';
+    }
 
-    if ( isset($_POST['delete']) && isset($_POST['customer_id']) ) {
-        $stmt = $conn->prepare("DELETE FROM Customers WHERE customer_ID = ?");
-        $id = $_POST['customer_id'];
 
-        $stmt->bind_param("i", $id);
-        $stmt->bind_param("i", $id);
-        if ($stmt->execute()){
-            echo("Deleted successfully");
+    if ( isset($_POST['status']) && isset($_POST['customer_id']) ) {
+        try {
+            $id = $_POST['customer_id'];
+
+            //Set customer to inactive/active
+            $stmt1 = $conn->prepare("UPDATE Customers SET active = $statusNew WHERE customer_ID = ?");
+            $stmt1->bind_param("i", $id);
+            $stmt1->execute();
+
+
+            //Delete the the users cart items
+            $stmt2 = $conn->prepare("DELETE FROM OrderItems WHERE order_ID IN (SELECT order_ID FROM Orders WHERE customer_ID = ? AND bought = '0')");
+            $stmt2->bind_param("i", $id);
+            $stmt2->execute();
+
+
+            //Delete the the users cart 
+            $stmt3 = $conn->prepare("DELETE FROM Orders WHERE customer_ID = ? AND bought = '0'");
+            $stmt3->bind_param("i", $id);
+            $stmt3->execute();
+
+
+            echo('Set '.$statusName.' successfully for '.$id);
             mysqli_commit($conn);
             header( 'Location: adminUsers.php?user_id='.$_GET['user_id']);
-        } else {
-            echo("Could not delete, please try again");
+
+        } catch (mysqli_sql_exception $exception) {
+            $mysqli->rollback();
+            echo("Could not change status, please try again");
+            throw $exception;
         }
-        echo("test");
+
         return;
     }
 
@@ -94,11 +120,11 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     $n = htmlentities($row['name']);
     $id = $row['customer_ID'];
 
-    echo("<p>Delete User ".$id.": ".$n);
+    echo("<p>Set Customer ".$id.", ".$n.", to: ".$statusName."</p><br/>");
     ?>
-    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id'] . '&customer_id=' . $_GET['customer_id']);?>">
+    <form method="post" action="<?php echo (htmlspecialchars($_SERVER["PHP_SELF"]) . '?user_id=' . $_GET['user_id'] . '&customer_id=' . $_GET['customer_id'] . '&status=' . $_GET['status']);?>">
     <input type="hidden" name="customer_id" value="<?=$id?>">
-    <input type="submit" name="delete" value="Delete">
+    <input type="submit" name="status" value="<?=$statusName?>">
     <a href="adminUsers.php?user_id=<?php echo($_GET['user_id'])?>">Cancel</a></p>
     </form>
 
