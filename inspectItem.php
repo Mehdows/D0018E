@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">git 
+<html lang="en" dir="ltr">
 <title>RS-MQF 1200 V.2</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -159,9 +159,10 @@ button.primaryContained:hover {
                     ?>
                     style="width:300px;height:300px;">
                 </div>
-                <div class="imgButton">
-                    <button value="test">buy</button>
-                </div>
+                <form method="post">
+              <input type="hidden" name="item_ID" value="buy" >
+              <input type="submit" name="buy" value="Buy">
+              </form>
             </div>
         </td>
 
@@ -308,6 +309,53 @@ if(isset($_POST['text']) & !empty($_POST['comment'])){
 	}
 }
 ?>
+<?php
+
+$user_ID = $_GET['user_id'];
+
+
+
+$query = "SELECT * FROM Orders WHERE customer_ID = '$user_ID' AND bought = 0";
+$res = mysqli_query($conn, $query);
+$rows = mysqli_num_rows($res);
+if ($rows == 0){
+  echo("\n$user_ID\n");
+  $query = "INSERT INTO Orders (customer_ID) VALUES ($user_ID)";
+  $return = mysqli_query($conn, $query) ;
+}
+
+
+if(isset($_POST['buy'])){
+  
+  $item_ID = $_GET['item_id'];
+  $order_ID = mysqli_query($conn, $query);
+  $order_ID = mysqli_fetch_assoc($order_ID);
+  $order_ID = $order_ID['order_ID'];
+
+  $query = "SELECT * FROM OrderItems WHERE order_ID = $order_ID AND item_ID = $item_ID";
+  $item = mysqli_query($conn, $query);
+  $row = mysqli_fetch_assoc($item);
+
+  if ($row){
+    
+    $amount = $row['amount'] + 1;
+    
+    $query = "UPDATE OrderItems SET amount = $amount WHERE order_ID = $order_ID AND item_ID = $item_ID";
+    $result = mysqli_query($conn, $query);
+  
+  }else{
+    
+    $query = "INSERT INTO OrderItems (order_ID, item_ID, amount) VALUES ($order_ID, $item_ID, 1)";
+    $result = mysqli_query($conn, $query);
+    
+  }
+
+  unset($_POST['buy']);
+
+}
+?>
+
+
 
 <!-- See Comments html -->
 <div class="panel panel-default">
