@@ -159,6 +159,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
                 //Set the current price in history
                 $query = "UPDATE `OrderItems` SET price='$currentPrice' WHERE item_ID='$item_ID' AND order_ID='$order_ID'";
                 $update = mysqli_query($conn, $query) ;
+
+                mysqli_commit($conn);
+                header( 'Location: homePage.php?user_id='.$_GET['user_id']);
+
                     
 
             }
