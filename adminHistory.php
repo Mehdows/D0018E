@@ -104,14 +104,44 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
     <h2>Shopping History</h2>
 
     <?php
-        //Copy sql from order history when that is done
-        $sql = "";
-    $result = $conn->query($sql);
-    ?>
+    $user_ID = $_GET['customer_id'];
+    $query = "SELECT * FROM Orders WHERE customer_ID = $user_ID AND bought = 1";
+    $orders = mysqli_query($conn, $query);
+    
+    while($order = mysqli_fetch_assoc($orders)){
+        echo('<h1>
+        Order ID: '.$order['order_ID'].' Purchase Date: '.$order['purchase_Date'].' Sent to: '.$order['adress'].'
+        </h1>');
+        $order_ID = $order['order_ID'];
+        $query = "SELECT * FROM OrderItems WHERE order_ID = $order_ID";
+        $orderItems = mysqli_query($conn, $query);
+        echo('<table style="width:100%">
+        <tr>
+                    <td>item ID</td>
+                    <td>item name</td>
+                    <td>amount</td>
+                    <td>price</td>
+                    <td>info</td>
+                
+        </tr>');
+        while($items = mysqli_fetch_assoc($orderItems)){
+            $item_ID = $items['item_ID']; 
+            $query = "SELECT * FROM Items WHERE item_ID = $item_ID";
+            $itemInfo = mysqli_query($conn, $query);
+            $itemInfo = mysqli_fetch_assoc($itemInfo);
+            echo('
+                <tr>
+                    <td>'.$items['item_ID'].'</td>
+                    <td>'.$itemInfo['name'].'</td>
+                    <td>'.$items['amount'].'</td>
+                    <td>'.$items['price'].'</td>
+                    <td>'.$itemInfo['info'].'</td>
+                </tr>
+            ');}
+    echo('</table>');
+    }
 
-    <!-- 
-        Add the code from he order history page
-        -->
+?>
     
     <?php
     closeConnection($conn);
