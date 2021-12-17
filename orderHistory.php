@@ -46,10 +46,10 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <div class="wrapper row2">
     <nav id="topnav">
     <ul class="clear">
-        <li class="active first"><a href="homePage.php">Homepage</a></li>
+        <li class="active first"><a href="homePage.php?user_id=<?php echo($_GET['user_id'])?>">Homepage</a></li>
         <li><a href="#"></a></li>
-        <li><a href="orderHistory.php">Order history</a></li>
-        <li><a href="shoppingCart.php">Cart</a></li>
+        <li><a href="orderHistory.php?user_id=<?php echo($_GET['user_id'])?>">Order history</a></li>
+        <li><a href="shoppingCart.php?user_id=<?php echo($_GET['user_id'])?>">Cart</a></li>
         <li><a href="login.php">Logout</a></li>
     </ul>
     </nav>
@@ -60,24 +60,46 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <!-- ################################################################################################ -->
     <div class="full_width clear">
     <h2>Orders</h2>
-
-    <table style="width:100%">
-<tr>
-            <th>Ordernumber</th>
-            <th>Cost</th>
-        </tr>
+</body>
+<?php
+    $user_ID = $_GET['user_id'];
+    $query = "SELECT * FROM Orders WHERE customer_ID = $user_ID AND bought = 1";
+    $orders = mysqli_query($conn, $query);
+    
+    while($order = mysqli_fetch_assoc($orders)){
+        echo('<h1>
+        Order ID: '.$order['order_ID'].' Purchase Date: '.$order['purchase_Date'].' Sent to: '.$order['adress'].'
+        </h1>');
+        $order_ID = $order['order_ID'];
+        $query = "SELECT * FROM OrderItems WHERE order_ID = $order_ID";
+        $orderItems = mysqli_query($conn, $query);
+        echo('<table style="width:100%">
         <tr>
-            <td>#001</td>
-            <td>6</td>
-            
-        </tr>
-        <tr>
-            <td>#002</td>
-            <td>3</td>
-            
-        </tr>
-    </table>
+                    <td>item ID</td>
+                    <td>item name</td>
+                    <td>amount</td>
+                    <td>price</td>
+                    <td>info</td>
+                
+        </tr>');
+        while($items = mysqli_fetch_assoc($orderItems)){
+            $item_ID = $items['item_ID']; 
+            $query = "SELECT * FROM Items WHERE item_ID = $item_ID";
+            $itemInfo = mysqli_query($conn, $query);
+            $itemInfo = mysqli_fetch_assoc($itemInfo);
+            echo('
+                <tr>
+                    <td>'.$items['item_ID'].'</td>
+                    <td>'.$itemInfo['name'].'</td>
+                    <td>'.$items['amount'].'</td>
+                    <td>'.$items['price'].'</td>
+                    <td>'.$itemInfo['info'].'</td>
+                </tr>
+            ');}
+    echo('</table>');
+    }
 
+?>
 <!--
         <div class="full_width">Order</div>
         <div class="one_third">One Third</div>
@@ -110,5 +132,5 @@ div.full_width div{color:#666666; background-color:#DEDEDE;}
 <?php
     closeConnection($conn);
 ?>
-</body>
+
 </html>
